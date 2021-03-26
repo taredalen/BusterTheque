@@ -2,6 +2,7 @@ package com.example.test;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -42,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
+        Log.d("msg", mAppBarConfiguration.toString());
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        Log.d("msg2", navController.toString());
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 

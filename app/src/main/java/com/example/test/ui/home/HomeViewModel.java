@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HomeViewModel extends ViewModel {
+
     private MutableLiveData<String> mText;
     public HomeViewModel() {
     mText = new MutableLiveData<>();
@@ -42,17 +43,19 @@ public class HomeViewModel extends ViewModel {
         return mText;
     }
 
-    public class MainActivity extends AppCompatActivity implements RecyclerViewClickInterface {
-        RecyclerView recyclerView;
-        private ArrayList<MovieData> movieData;
-        Intent intent;
-        boolean isScrolling = false;
-        int currentItems, totalItems, scrollOutItems;
-        MovieAdapter adapter;
-        String title;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+public class SecondActivity extends AppCompatActivity implements RecyclerViewClickInterface {
+
+    RecyclerView recyclerView;
+    private ArrayList<MovieData> movieData;
+    Intent intent;
+    boolean isScrolling = false;
+    int currentItems, totalItems, scrollOutItems;
+    MovieAdapter adapter;
+    String title;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_film);
 
@@ -62,11 +65,11 @@ public class HomeViewModel extends ViewModel {
 
         movieData = new ArrayList<>();
 
-        adapter = new MovieAdapter(MainActivity.this, movieData, MainActivity.this);
+        adapter = new MovieAdapter(SecondActivity.this, movieData, SecondActivity.this);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
-        LinearLayoutManager layout = new LinearLayoutManager(MainActivity.this);
+        recyclerView.addItemDecoration(new DividerItemDecoration(SecondActivity.this, DividerItemDecoration.VERTICAL));
+        LinearLayoutManager layout = new LinearLayoutManager(SecondActivity.this);
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(adapter);
         Log.d("testmsg", "juste pour voir");
@@ -75,7 +78,7 @@ public class HomeViewModel extends ViewModel {
             title = txt.getText().toString();
             movieData.clear();
             Log.d("msgtest", "je teste pour verifier quelque chose");
-            MainActivity.this.addMovieToAdapter(title, 1);
+            addMovieToAdapter(title, 1);
         });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -154,7 +157,7 @@ public class HomeViewModel extends ViewModel {
             public void run() {
                 OmdbApiSearch o = new OmdbApiSearch(movieData.get(position).imdbID, getResources().getString(R.string.ApiKey));
                 JSONObject json = o.getMovie();
-                intent = new Intent(MainActivity.this, FilmDisplayActivity.class);
+                intent = new Intent(SecondActivity.this, FilmDisplayActivity.class);
                 intent.putExtra("json", json.toString());
                 runOnUiThread(new Runnable() {
                     @Override

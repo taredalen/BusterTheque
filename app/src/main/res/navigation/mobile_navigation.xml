@@ -9,7 +9,11 @@
             android:id="@+id/nav_home"
             android:name="com.example.test.ui.home.HomeFragment"
             android:label="@string/menu_home"
-            tools:layout="@layout/fragment_home"/>
+            tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_secondActivity2"
+            app:destination="@id/secondActivity2" />
+    </fragment>
 
     <fragment
             android:id="@+id/nav_gallery"
@@ -22,4 +26,8 @@
             android:name="com.example.test.ui.statistics.StatisticsFragment"
             android:label="@string/menu_statistics"
             tools:layout="@layout/fragment_statistics"/>
+    <activity
+        android:id="@+id/secondActivity2"
+        android:name="com.example.test.SecondActivity"
+        android:label="SecondActivity" />
 </navigation>

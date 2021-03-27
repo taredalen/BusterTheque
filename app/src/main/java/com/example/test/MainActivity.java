@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.test.ui.home.HomeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -84,4 +85,9 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    //public void onClick(View view) {
+    //    Intent i = new Intent(this, HomeViewModel.SecondActivity.class);
+    //    startActivity(i);
+    //}
 }

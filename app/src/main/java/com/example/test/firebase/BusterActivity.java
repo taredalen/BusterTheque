@@ -32,7 +32,7 @@ public class BusterActivity extends AppCompatActivity {
         });
     }
     public void onClickBuster(View view) { // TODO
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, MainAuthentication.class));
     }
     //----------------------------------------------------------------------------------------------
     @Override

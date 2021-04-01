@@ -3,6 +3,5 @@
     <style name="TransparentActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
-
     </style>
 </resources>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".firebase.BusterActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="431dp"
+        android:layout_height="775dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/buster_final" />
+
+    <TextView
+        android:id="@+id/welcome2"
+        android:layout_width="299dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:fontFamily="@font/pt_sans_caption_bold"
+        android:letterSpacing="0.25"
+        android:text="Account created!"
+        android:textAllCaps="false"
+        android:textColor="#101010"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.603"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.174" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="152dp"
+        android:layout_height="166dp"
+        android:fontFamily="@font/pt_sans_caption_regular"
+        android:gravity="center"
+        android:letterSpacing="0.05"
+        android:text="Yay! Your account Busterthèque has been created!
+         You can now login with your account"
+        android:textColor="#939498"
+        android:textSize="16sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.314" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="281dp"
+        android:layout_height="42dp"
+        android:background="#0000"
+        android:foreground="@drawable/login_button"
+        android:onClick="onClickBuster"
+        android:text="@string/login"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.762"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

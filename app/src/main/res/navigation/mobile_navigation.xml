@@ -41,4 +41,8 @@
             android:name="json"
             app:argType="string" />
     </fragment>
+    <activity
+        android:id="@+id/secondActivity"
+        android:name="com.example.test.SecondActivity"
+        android:label="SecondActivity" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.ui.film;
 
 import android.content.Context;
 import android.os.Build;
@@ -13,14 +13,17 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.test.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+//import com.bumptech.glide.Glide;
 
-public class MovieAdapter extends RecyclerView.Adapter<com.example.test.MovieAdapter.ViewHolder> {
+
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     Context context;
     ArrayList<MovieData> movie;
@@ -54,14 +57,14 @@ public class MovieAdapter extends RecyclerView.Adapter<com.example.test.MovieAda
     @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
-    public com.example.test.MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycler_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull com.example.test.MovieAdapter.ViewHolder holder, int position) { //TODO
+    public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder holder, int position) {
         holder.textViewTitle.setText(movie.get(position).title);
         holder.textViewYear.setText(movie.get(position).year);
         //Glide.with(context).load(movie.get(position).poster)
@@ -89,3 +92,22 @@ public class MovieAdapter extends RecyclerView.Adapter<com.example.test.MovieAda
 }
 
 
+class MovieData {
+
+    public String title;
+    public String year;
+    public String imdbID;
+    public String poster;
+
+    MovieData(JSONObject json) throws JSONException {
+        prepareData(json);
+
+    }
+
+    private void prepareData(JSONObject json) throws JSONException {
+        title = json.get("Title").toString();
+        year = json.get("Year").toString();
+        imdbID = json.get("imdbID").toString();
+        poster = json.get("Poster").toString();
+    }
+}

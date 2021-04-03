@@ -42,6 +42,8 @@ public class OmdbApiSearch {
 
         JSONObject jsonFilm = httpGetRequest(request);
 
+        Log.d("msg", jsonFilm.toString());
+
         return jsonFilm.getJSONArray("Search");
 
     }

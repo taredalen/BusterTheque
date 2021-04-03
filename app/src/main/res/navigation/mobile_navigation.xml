@@ -22,4 +22,23 @@
             android:name="com.example.test.ui.statistics.StatisticsFragment"
             android:label="@string/menu_statistics"
             tools:layout="@layout/fragment_statistics"/>
+
+    <fragment
+        android:id="@+id/nav_search_film"
+        android:name="com.example.test.ui.film.SearchFilmFragment"
+        android:label="@string/menu_film"
+        tools:layout="@layout/search_film">
+        <action
+            android:id="@+id/action_nav_search_film_to_nav_film_display"
+            app:destination="@id/nav_film_display" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_film_display"
+        android:name="com.example.test.ui.film.FilmLoadFragment"
+        android:label="@string/menu_film"
+        tools:layout="@layout/film_layout">
+        <argument
+            android:name="json"
+            app:argType="string" />
+    </fragment>
 </navigation>

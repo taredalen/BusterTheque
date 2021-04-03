@@ -8,6 +8,10 @@
                 android:id="@+id/nav_home"
                 android:title="@string/menu_home"/>
         <item
+                android:id="@+id/nav_search_film"
+                android:title="@string/menu_film"/>
+
+        <item
                 android:id="@+id/nav_gallery"
                 android:title="@string/menu_collection"/>
         <item

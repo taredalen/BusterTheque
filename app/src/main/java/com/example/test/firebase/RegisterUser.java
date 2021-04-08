@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.regex.Pattern;
@@ -35,7 +36,8 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     private EditText editTextUserName, editTextEmail, editTextPassword;
 
     private FirebaseAuth auth;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String uid;
 
     //----------------------------------------------------------------------------------------------
     @Override
@@ -104,7 +106,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 User user = new User(name, email);
-                db.collection("users").add(user).addOnCompleteListener(task1 -> {
+                uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DocumentReference documentReference = db.collection("users").document(uid);
+                documentReference.set(user).addOnCompleteListener(task1 -> {
                     if(task1.isSuccessful()){
                         //Toast.makeText(RegisterUser.this,"User has been registered successfully!", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.VISIBLE);

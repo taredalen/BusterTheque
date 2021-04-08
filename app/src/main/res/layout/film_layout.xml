@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.004"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/gradient" />
 
     <ScrollView
         android:layout_width="0dp"
@@ -256,6 +256,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.122" />
+
+            <Button
+                android:id="@+id/buttonAddMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="53dp"
+                android:layout_marginRight="53dp"
+                android:text="+"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textFilmLayoutPlot"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

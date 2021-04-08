@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,14 +12,19 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
+import com.example.test.firebase.MainAuthentication;
+import com.example.test.firebase.Movie;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class FilmLoadFragment extends Fragment {
+public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
-    String json;
+    public String json;
+    public String imbdID;
     ImageView imageViewFilmLayout;
     TextView textFilmLayoutTitle;
     TextView textFilmLayoutRuntime;
@@ -31,6 +37,9 @@ public class FilmLoadFragment extends Fragment {
     TextView textFilmLayoutWriter;
     TextView textFilmLayoutLanguage;
 
+    private Button buttonAddMovie;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public FilmLoadFragment() {
         // Required empty public constructor
     }
@@ -40,6 +49,8 @@ public class FilmLoadFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             json = getArguments().getString("json");
+            imbdID = getArguments().getString("ID");
+
         }
     }
 
@@ -64,7 +75,7 @@ public class FilmLoadFragment extends Fragment {
             JSONObject jsonO = new JSONObject(json);
             if (!jsonO.get("Poster").toString().equals("N/A")) {
                 Glide.with(this).load(jsonO.get("Poster").toString())
-                        .placeholder(R.drawable.ic_launcher_background).into(imageViewFilmLayout);
+                        .placeholder(R.drawable.gradient).into(imageViewFilmLayout);
             }
             textFilmLayoutDirector.setText(jsonO.get("Director").toString());
             textFilmLayoutCast.setText(jsonO.get("Actors").toString());
@@ -82,8 +93,29 @@ public class FilmLoadFragment extends Fragment {
             e.printStackTrace();
         }
 
-
+        buttonAddMovie = (Button) view.findViewById(R.id.buttonAddMovie);
+        buttonAddMovie.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.buttonAddMovie) {
+            addMovie();
+        }
+    }
+
+    public void addMovie() {
+        if (MainAuthentication.user == null) {
+            System.out.println("No user is signed in"); // TODO
+        } else {
+            System.out.println("User is signed in");
+            System.out.println("test time : " + imbdID);
+
+            Movie movie = new Movie(imbdID, "note", "rating");
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            db.collection("users").document(uid).collection("movies").add(movie);
+        }
     }
 }

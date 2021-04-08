@@ -4,22 +4,54 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+
 import com.example.test.R;
+import com.example.test.firebase.MainAuthentication;
+import com.example.test.firebase.Movie;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Button buttonAddMovie, buttonSetMovie;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
+
+        buttonAddMovie = root.findViewById(R.id.buttonAddMovieHome);
+        buttonSetMovie = root.findViewById(R.id.buttonSetMovie);
+
+        buttonAddMovie.setOnClickListener(this);
+        buttonSetMovie.setOnClickListener(this);
 
         return root;
+    }
+
+    @Override
+    public void onClick(View v) {
+    switch (v.getId()) {
+        case R.id.buttonAddMovie:
+            System.out.println("tram");
+            addMovie();
+            break;
+        case R.id.buttonSetMovie:
+            System.out.println("param");
+            break;
+    } }
+
+    public void addMovie() {
+        if (MainAuthentication.user == null) {
+            System.out.println("No user is signed in");
+        } else {
+            System.out.println("User is signed in");
+            Movie movie = new Movie("testimdbID", "some description", "some grade");
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            db.collection("users").document(uid).collection("movies").add(movie);
+        }
     }
 }

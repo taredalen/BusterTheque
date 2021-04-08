@@ -11,12 +11,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.test.MainActivity;
 import com.example.test.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
@@ -28,8 +32,9 @@ public class MainAuthentication extends AppCompatActivity implements View.OnClic
     private EditText editTextEmail, editTextPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    public static FirebaseUser user;
 
-    //----------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -53,14 +58,27 @@ public class MainAuthentication extends AppCompatActivity implements View.OnClic
         decorView.setOnSystemUiVisibilityChangeListener(visibility -> {
             if(visibility == 0)
                 decorView.setSystemUiVisibility(hideSystemBars());
-        });
-    }
 
+
+        });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            System.out.println("User is signed in");
+        } else {
+            System.out.println("no ser is signed in");
+
+        }
+        //if (auth.getCurrentUser() != null) {
+        //    startActivity(new Intent(MainAuthentication.this, MainActivity.class));
+        //    finish();
+        //}
+    }
     public void onClick2(View view) { // TODO
         Intent i = new Intent(this, MainActivity.class);
+    //    i.putExtra("key",value);
         startActivity(i);
     }
-
     //----------------------------------------------------------------------------------------------
     @Override
     public void onClick(View v) {
@@ -106,15 +124,34 @@ public class MainAuthentication extends AppCompatActivity implements View.OnClic
         }
 
         progressBar.setVisibility(View.VISIBLE);
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(MainAuthentication.this, task -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        user = auth.getCurrentUser();
+                        Intent i = new Intent(MainAuthentication.this, MainActivity.class);
+                        i.putExtra("id",user);
+                        startActivity(i);
+                        finish();
+
+                    } else {
+                        Toast.makeText(MainAuthentication.this, "Failed to login! Try again!", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+       /* progressBar.setVisibility(View.VISIBLE);
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
         if (task.isSuccessful()) {
-            System.out.println("good job");
-            startActivity(new Intent(MainAuthentication.this, MainActivity.class));
+            //String uid = user.getUid();
+            FirebaseUser currentUser = auth.getCurrentUser();
+            Intent i = new Intent(MainAuthentication.this, MainActivity.class);
+            i.putExtra("id",currentUser);
+            startActivity(i);
         } else {
             Toast.makeText(MainAuthentication.this, "Failed to login! Try again!", Toast.LENGTH_LONG).show();
         }
-    });
-    }
+    });*/
 
     //----------------------------------------------------------------------------------------------
     @Override
@@ -125,7 +162,7 @@ public class MainAuthentication extends AppCompatActivity implements View.OnClic
          }
     }
     private int hideSystemBars(){
-    return  SYSTEM_UI_FLAG_LAYOUT_STABLE
+        return  SYSTEM_UI_FLAG_LAYOUT_STABLE
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -133,7 +170,6 @@ public class MainAuthentication extends AppCompatActivity implements View.OnClic
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
     }
-    //----------------------------------------------------------------------------------------------
 }
 
 

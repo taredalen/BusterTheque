@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context=".ui.home.HomeViewModel$SecondActivity">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -27,10 +26,10 @@
         android:layout_marginTop="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333">
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -41,10 +40,12 @@
             android:gravity="center"
             android:maxLines="5"
             android:text="TextView"
-            android:textSize="18sp"
+            android:fontFamily="@font/pt_sans_caption_regular"
+            android:letterSpacing="0.05"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintHorizontal_bias="0.67"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.869" />
@@ -55,11 +56,11 @@
             android:layout_height="249dp"
             app:layout_constraintBottom_toTopOf="@+id/textViewTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintHorizontal_bias="0.729"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.718"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/gradient" />
 
         <TextView
             android:id="@+id/textViewYear"
@@ -67,9 +68,12 @@
             android:layout_height="25dp"
             android:gravity="center"
             android:text="TextView"
+            android:fontFamily="@font/pt_sans_caption_regular"
+            android:letterSpacing="0.05"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintHorizontal_bias="0.604"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
             app:layout_constraintVertical_bias="0.0" />

@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -37,6 +38,7 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
     MovieAdapter adapter;
     String title;
     View view;
+    public String id;
 
     public SearchFilmFragment() {
         // Required empty public constructor
@@ -97,11 +99,12 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
                 }
             }
         });
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         return view;
     }
 
-    private void addMovieToAdapter(String movieTitle, int page ) {
+
+private void addMovieToAdapter(String movieTitle, int page ) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         ProgressDialog p = new ProgressDialog(getActivity());
         p.setMessage("please wait");
@@ -139,15 +142,16 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
     public void onItemClick(int position) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
+            String id = movieData.get(position).imdbID;
             OmdbApiSearch o = new OmdbApiSearch(movieData.get(position).imdbID, "63f3e471");
             JSONObject json = o.getMovie();
             Bundle bundle = new Bundle();
             bundle.putString("json", json.toString());
+            bundle.putString("ID", id);
 
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_nav_film_display, bundle);
             });
-
         });
     }
 }

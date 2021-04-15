@@ -139,6 +139,7 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
     public void onItemClick(int position) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
+            String id = movieData.get(position).imdbID;
             OmdbApiSearch o = new OmdbApiSearch(movieData.get(position).imdbID, "63f3e471");
             JSONObject json = null;
             try {
@@ -148,7 +149,9 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
             }
             Bundle bundle = new Bundle();
             bundle.putString("json", json.toString());
-            
+
+            bundle.putString("ID", id);
+
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_nav_film_display, bundle);
             });

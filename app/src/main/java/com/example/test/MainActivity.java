@@ -5,16 +5,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
-import com.example.test.firebase.MainAuthentication;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
@@ -23,9 +24,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.helloworld.MESSAGE";
     private AppBarConfiguration mAppBarConfiguration;
     private View decorView;
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
 
-
-    @Override
+@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
             if(visibility == 0)
                 decorView.setSystemUiVisibility(hideSystemBars());
         });
+    //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+    auth = FirebaseAuth.getInstance();
+    currentUser = auth.getCurrentUser();
     }
     //----------------------------------------------------------------------------------------------
     @Override
@@ -80,13 +86,12 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    //public void onClick(View view) {
-    //    Intent i = new Intent(this, HomeViewModel.SecondActivity.class);
-    //    startActivity(i);
-    //}
-
-    public void onClick(View view) {
-    Intent i = new Intent(this, MainAuthentication.class);
-     startActivity(i);
- }
+    @Override
+    public void onStart() {
+        super.onStart();
+    // Check if user is signed in (non-null) and update UI accordingly.
+        if(currentUser != null){
+            System.out.println("No user is signed in");
+        }
+    }
 }

@@ -25,17 +25,17 @@ public class BusterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buster);
 
-        decorView = getWindow().getDecorView();
+        /*decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(visibility -> {
             if(visibility == 0)
                 decorView.setSystemUiVisibility(hideSystemBars());
-        });
+        });*/
     }
     public void onClickBuster(View view) { // TODO
         startActivity(new Intent(this, MainActivity.class));
     }
     //----------------------------------------------------------------------------------------------
-    @Override
+    /*@Override
     public void onWindowFocusChanged(boolean hasFocus){
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
@@ -50,6 +50,5 @@ public class BusterActivity extends AppCompatActivity {
             | View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-    }
-    //----------------------------------------------------------------------------------------------
+    }*/
 }

@@ -32,6 +32,7 @@
             android:id="@+id/action_nav_search_film_to_nav_film_display"
             app:destination="@id/nav_film_display" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_film_display"
         android:name="com.example.test.ui.film.FilmLoadFragment"
@@ -41,5 +42,11 @@
             android:name="json"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_fragment_blank"
+        android:name="com.example.test.ui.filmId.BlankFragment"
+        android:label="@string/menu_film"
+        tools:layout="@layout/fragment_blank"/>
 
 </navigation>

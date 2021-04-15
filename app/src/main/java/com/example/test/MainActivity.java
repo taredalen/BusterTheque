@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private View decorView;
 
 
-@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_search_film)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_search_film, R.id.nav_fragment_blank)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

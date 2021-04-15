@@ -17,15 +17,6 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/result_tabs"
-                android:background="#FFFFFF"
-                app:tabTextColor="@color/colorPrimary"
-                app:tabSelectedTextColor="@color/colorPrimary"
-                app:tabIndicatorColor="@color/colorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="scrollable"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager.widget.ViewPager
@@ -33,6 +24,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/result_tabs"
+            android:layout_width="169dp"
+            android:layout_height="38dp"
+            android:background="#0000"
+            app:layout_anchor="@+id/appbar"
+            app:layout_anchorGravity="center"
+            app:tabIndicatorColor="#576FAF"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="#576FAF"
+            app:tabTextColor="#576FAF" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

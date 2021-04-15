@@ -1,6 +1,7 @@
 package com.example.test.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.test.firebase.MainAuthentication;
 import com.example.test.firebase.Movie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -46,12 +48,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public void addMovie() {
         if (MainAuthentication.user == null) {
-            System.out.println("No user is signed in");
+            System.out.println("No user is signed in"); // TODO
         } else {
             System.out.println("User is signed in");
-            Movie movie = new Movie("testimdbID", "some description", "some grade");
+            Movie movie = new Movie("imbdID", "note", "rating");
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             db.collection("users").document(uid).collection("movies").add(movie);
+            readDocs();
         }
+    }
+    public void readDocs(){
+        System.out.println("---------------------------------------------------------------------");
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // db.collection("users").document(uid).collection("movies").add(movie);
+
+        db.collection("users").document(uid).collection("movies").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Log.d("TAG", document.getId() + " => " + document.getString("imdbID"));
+                }
+            } else {
+                Log.d("TAG", "Error getting documents: ", task.getException());
+            }
+        });
     }
 }

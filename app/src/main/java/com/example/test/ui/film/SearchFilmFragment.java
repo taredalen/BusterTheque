@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,7 +66,9 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager layout = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layout);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+        //recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(adapter);
 
         btn.setOnClickListener(v -> {

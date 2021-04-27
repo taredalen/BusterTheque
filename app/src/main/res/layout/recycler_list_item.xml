@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    app:spanCount="2">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -21,60 +23,59 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="317dp"
-        android:layout_height="341dp"
+        android:layout_width="160dp"
+        android:layout_height="275dp"
         android:layout_marginTop="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/textViewTitle"
-            android:layout_width="153dp"
-            android:layout_height="27dp"
-            android:autoSizeTextType="uniform"
-            android:breakStrategy="balanced"
+            android:layout_width="134dp"
+            android:layout_height="22dp"
+            android:fontFamily="@font/pt_sans_caption_regular"
             android:gravity="center"
+            android:letterSpacing="0.05"
             android:maxLines="5"
             android:text="TextView"
-            android:fontFamily="@font/pt_sans_caption_regular"
-            android:letterSpacing="0.05"
-            android:textSize="16sp"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.67"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintStart_toStartOf="@+id/imageViewPoster"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.869" />
+            app:layout_constraintVertical_bias="0.858" />
 
         <ImageView
             android:id="@+id/imageViewPoster"
-            android:layout_width="195dp"
-            android:layout_height="249dp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewTitle"
+            android:layout_width="133dp"
+            android:layout_height="197dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.729"
+            app:layout_constraintHorizontal_bias="0.481"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.256"
             app:srcCompat="@drawable/gradient" />
 
         <TextView
             android:id="@+id/textViewYear"
             android:layout_width="67dp"
             android:layout_height="25dp"
-            android:gravity="center"
-            android:text="TextView"
             android:fontFamily="@font/pt_sans_caption_regular"
+            android:gravity="center"
             android:letterSpacing="0.05"
-            android:textSize="16sp"
+            android:text="TextView"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.604"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitle"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
             app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>

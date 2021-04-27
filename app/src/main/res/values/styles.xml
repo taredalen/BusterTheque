@@ -24,5 +24,8 @@
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/pt_sans_caption_bold</item>
     </style>
-
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/colorPrimary</item>
+    </style>
 </resources>

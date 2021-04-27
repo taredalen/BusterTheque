@@ -20,5 +20,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"
     />
+    <style name="MenuItems" parent="AppTheme">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/pt_sans_caption_bold</item>
+    </style>
 
 </resources>

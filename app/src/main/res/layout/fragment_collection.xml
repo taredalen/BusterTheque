@@ -23,19 +23,20 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorBack"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/result_tabs"
-            android:layout_width="169dp"
-            android:layout_height="38dp"
+            android:layout_width="181dp"
+            android:layout_height="63dp"
             android:background="#0000"
             app:layout_anchor="@+id/appbar"
             app:layout_anchorGravity="center"
-            app:tabIndicatorColor="#576FAF"
+            app:tabIndicatorColor="@color/colorPrimary"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="#576FAF"
-            app:tabTextColor="#576FAF" />
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextColor="@color/colorPrimary" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

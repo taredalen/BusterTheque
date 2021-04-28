@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.collection.BlankFragmentWatched" >
+    tools:context=".ui.collection.BlankFragmentWatched"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    app:spanCount="2">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDisplayFilmCollection"
-        android:layout_width="355dp"
-        android:layout_height="561dp"
+        android:layout_width="303dp"
+        android:layout_height="559dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="80dp"

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.OmdbApi.OmdbApiSearch;
@@ -43,17 +43,14 @@ public class BlankFragmentWatched extends Fragment implements RecyclerViewClickI
                          Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_blank_watched, container, false);
 
-        //String[] movieId = {"tt0060196", "tt1979388"};
-
         movieData = new ArrayList<>();
         adapter = new MovieAdapter(getActivity(), movieData, this);
 
         recyclerView = view.findViewById(R.id.recyclerViewDisplayFilmCollection);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager layout = new LinearLayoutManager(getActivity());
 
-        recyclerView.setLayoutManager(layout);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setAdapter(adapter);
 
         readDocs();

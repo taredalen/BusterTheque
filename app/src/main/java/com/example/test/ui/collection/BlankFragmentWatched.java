@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -104,5 +106,22 @@ public class BlankFragmentWatched extends Fragment implements RecyclerViewClickI
 
     @Override
     public void onItemClick(int position) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            String id = movieData.get(position).imdbID;
+            OmdbApiSearch o = new OmdbApiSearch(movieData.get(position).imdbID, "63f3e471");
+            JSONObject json = null;
+            try {
+                json = o.getMovie();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Bundle bundle = new Bundle();
+            bundle.putString("json", json.toString());
+            bundle.putString("ID", id);
+            getActivity().runOnUiThread(() -> {
+                Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_nav_film_display, bundle);
+            });
+        });
     }
 }

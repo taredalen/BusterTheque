@@ -36,6 +36,7 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
     TextView textFilmLayoutDirector;
     TextView textFilmLayoutWriter;
     TextView textFilmLayoutLanguage;
+    TextView textFilmLayoutRating;
 
     private Button buttonAddMovie;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -60,7 +61,7 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.film_layout, container, false);
         imageViewFilmLayout = view.findViewById(R.id.imageViewFilmLayoutPoster);
-        textFilmLayoutCast = view.findViewById(R.id.textFilmLayoutCast);
+        //textFilmLayoutCast = view.findViewById(R.id.textFilmLayoutCast);
         textFilmLayoutCountry = view.findViewById(R.id.textFilmLayoutCountry);
         textFilmLayoutDirector = view.findViewById(R.id.textFilmLayoutDirector);
         textFilmLayoutTitle = view.findViewById(R.id.textFilmLayoutTitle);
@@ -68,8 +69,9 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
         textFilmLayoutYear = view.findViewById(R.id.textFilmLayoutYear);
         textFilmLayoutPlot = view.findViewById(R.id.textFilmLayoutPlot);
         textFilmLayoutGenre = view.findViewById(R.id.textFilmLayoutGenre);
-        textFilmLayoutWriter = view.findViewById(R.id.textFilmLayoutWriter);
-        textFilmLayoutLanguage = view.findViewById(R.id.textFilmLayoutLanguage);
+        //textFilmLayoutWriter = view.findViewById(R.id.textFilmLayoutWriter);
+        //textFilmLayoutLanguage = view.findViewById(R.id.textFilmLayoutLanguage);
+        textFilmLayoutRating = view.findViewById(R.id.textFilmLayoutRating);
 
         try {
             JSONObject jsonO = new JSONObject(json);
@@ -78,15 +80,16 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
                         .placeholder(R.drawable.gradient).into(imageViewFilmLayout);
             }
             textFilmLayoutDirector.setText(jsonO.get("Director").toString());
-            textFilmLayoutCast.setText(jsonO.get("Actors").toString());
+            //textFilmLayoutCast.setText(jsonO.get("Actors").toString());
             textFilmLayoutGenre.setText(jsonO.get("Genre").toString());
-            textFilmLayoutLanguage.setText(jsonO.get("Language").toString());
+            //textFilmLayoutLanguage.setText(jsonO.get("Language").toString());
             textFilmLayoutYear.setText(jsonO.get("Year").toString());
             textFilmLayoutPlot.setText(jsonO.get("Plot").toString());
             textFilmLayoutCountry.setText(jsonO.get("Country").toString());
             textFilmLayoutRuntime.setText(jsonO.get("Runtime").toString());
-            textFilmLayoutWriter.setText(jsonO.get("Writer").toString());
+            //textFilmLayoutWriter.setText(jsonO.get("Writer").toString());
             textFilmLayoutTitle.setText(jsonO.get("Title").toString());
+            textFilmLayoutRating.setText(jsonO.get("imdbRating").toString());
 
 
         } catch (JSONException e) {

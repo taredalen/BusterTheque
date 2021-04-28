@@ -1,4 +1,4 @@
-package com.example.test.ui.collection;
+package com.example.test.ui.film;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
 
-public class BlankFragmentWishList extends Fragment {
+public class MovieAdd extends Fragment {
 
-    public BlankFragmentWishList() {
+    public MovieAdd() {
     // Required empty public constructor
     }
     @Override
@@ -19,7 +19,7 @@ public class BlankFragmentWishList extends Fragment {
         super.onCreate(savedInstanceState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {// Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank_wish_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_movie_add, container, false);
     }
 }

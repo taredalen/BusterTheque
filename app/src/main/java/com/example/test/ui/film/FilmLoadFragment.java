@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
@@ -38,6 +39,8 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
     TextView textFilmLayoutLanguage;
     TextView textFilmLayoutRating;
 
+    View view;
+
     private Button buttonAddMovie;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -59,7 +62,7 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.film_layout, container, false);
+        view =  inflater.inflate(R.layout.film_layout, container, false);
         imageViewFilmLayout = view.findViewById(R.id.imageViewFilmLayoutPoster);
         //textFilmLayoutCast = view.findViewById(R.id.textFilmLayoutCast);
         textFilmLayoutCountry = view.findViewById(R.id.textFilmLayoutCountry);
@@ -105,7 +108,12 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAddMovie) {
-            addMovie();
+            Bundle bundle = new Bundle();
+            bundle.putString("ID", imbdID);
+            getActivity().runOnUiThread(() -> {
+                Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
+            });
+            //addMovie();
         }
     }
 

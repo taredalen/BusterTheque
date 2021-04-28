@@ -123,9 +123,11 @@
                 android:id="@+id/textFilmLayoutPlot"
                 android:layout_width="214dp"
                 android:layout_height="197dp"
-                android:text="Introduction"
                 android:fontFamily="@font/pt_sans_caption_regular"
+                android:gravity="fill_horizontal"
+                android:justificationMode="inter_word"
                 android:letterSpacing="0.05"
+                android:text="Introduction"
                 android:textColor="@color/colorAccent"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -133,9 +135,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textView33"
                 app:layout_constraintTop_toBottomOf="@+id/textView33"
-                app:layout_constraintVertical_bias="1.0"
-                android:justificationMode="inter_word"
-                />
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/textFilmLayoutDirector"

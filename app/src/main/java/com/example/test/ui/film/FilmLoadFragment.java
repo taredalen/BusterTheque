@@ -24,19 +24,15 @@ import org.json.JSONObject;
 
 public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
-    public String json;
-    public String imbdID;
+    public String json, imbdID, title, year;
     ImageView imageViewFilmLayout;
     TextView textFilmLayoutTitle;
     TextView textFilmLayoutRuntime;
     TextView textFilmLayoutYear;
-    TextView textFilmLayoutCast;
     TextView textFilmLayoutPlot;
     TextView textFilmLayoutGenre;
     TextView textFilmLayoutCountry;
     TextView textFilmLayoutDirector;
-    TextView textFilmLayoutWriter;
-    TextView textFilmLayoutLanguage;
     TextView textFilmLayoutRating;
 
     View view;
@@ -67,7 +63,7 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
         //textFilmLayoutCast = view.findViewById(R.id.textFilmLayoutCast);
         textFilmLayoutCountry = view.findViewById(R.id.textFilmLayoutCountry);
         textFilmLayoutDirector = view.findViewById(R.id.textFilmLayoutDirector);
-        textFilmLayoutTitle = view.findViewById(R.id.textFilmLayoutTitle);
+        textFilmLayoutTitle = view.findViewById(R.id.textMovieTitle);
         textFilmLayoutRuntime = view.findViewById(R.id.textFilmLayoutRuntime);
         textFilmLayoutYear = view.findViewById(R.id.textFilmLayoutYear);
         textFilmLayoutPlot = view.findViewById(R.id.textFilmLayoutPlot);
@@ -83,18 +79,20 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
                         .placeholder(R.drawable.gradient).into(imageViewFilmLayout);
             }
             textFilmLayoutDirector.setText(jsonO.get("Director").toString());
-            //textFilmLayoutCast.setText(jsonO.get("Actors").toString());
             textFilmLayoutGenre.setText(jsonO.get("Genre").toString());
-            //textFilmLayoutLanguage.setText(jsonO.get("Language").toString());
             textFilmLayoutYear.setText(jsonO.get("Year").toString());
             textFilmLayoutPlot.setText(jsonO.get("Plot").toString());
             textFilmLayoutCountry.setText(jsonO.get("Country").toString());
             textFilmLayoutRuntime.setText(jsonO.get("Runtime").toString());
-            //textFilmLayoutWriter.setText(jsonO.get("Writer").toString());
             textFilmLayoutTitle.setText(jsonO.get("Title").toString());
             textFilmLayoutRating.setText(jsonO.get("imdbRating").toString());
 
+            //textFilmLayoutCast.setText(jsonO.get("Actors").toString());
+            //textFilmLayoutLanguage.setText(jsonO.get("Language").toString());
+            //textFilmLayoutWriter.setText(jsonO.get("Writer").toString());
 
+            title = jsonO.get("Title").toString();
+            year = jsonO.get("Year").toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -109,7 +107,9 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAddMovie) {
             Bundle bundle = new Bundle();
-            bundle.putString("ID", imbdID);
+            bundle.putString("imdbID", imbdID);
+            bundle.putString("title", title);
+            bundle.putString("year", year);
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
             });

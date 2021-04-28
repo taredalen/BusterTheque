@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.105" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textMovieTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="title"
@@ -49,11 +49,11 @@
         app:layout_constraintVertical_bias="0.048" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/textMovieYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="year"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimary"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +63,7 @@
         app:layout_constraintVertical_bias="0.101" />
 
     <Button
-        android:id="@+id/button_add_watched"
+        android:id="@+id/buttonAddWatched"
         android:layout_width="126dp"
         android:layout_height="35dp"
         android:layout_marginEnd="32dp"
@@ -72,14 +72,14 @@
         android:foreground="@drawable/add_watched"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddWishlist"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.942" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonAddWishlist"
         android:layout_width="126dp"
         android:layout_height="35dp"
         android:layout_marginEnd="36dp"
@@ -99,7 +99,7 @@
         android:ems="10"
         android:gravity="fill_horizontal"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="Comment"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -147,10 +147,10 @@
                 android:textSize="14sp"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textFilmLayoutTitle"
+                app:layout_constraintEnd_toEndOf="@+id/textMovieTitle"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textFilmLayoutTitle"
-                app:layout_constraintTop_toBottomOf="@+id/textFilmLayoutTitle"
+                app:layout_constraintStart_toStartOf="@+id/textMovieTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textMovieTitle"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -206,7 +206,7 @@
                 app:layout_constraintVertical_bias="0.233" />
 
             <TextView
-                android:id="@+id/textFilmLayoutTitle"
+                android:id="@+id/textMovieTitle"
                 android:layout_width="216dp"
                 android:layout_height="29dp"
                 android:fontFamily="@font/pt_sans_caption_bold"

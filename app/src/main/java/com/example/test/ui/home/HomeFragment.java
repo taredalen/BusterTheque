@@ -36,15 +36,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-    switch (v.getId()) {
-        case R.id.buttonAddMovie:
-            System.out.println("tram");
-            addMovie();
-            break;
-        case R.id.buttonSetMovie:
-            System.out.println("param");
-            break;
-    } }
+        switch (v.getId()) {
+            case R.id.buttonAddMovie:
+                System.out.println("tram");
+                addMovie();
+                break;
+            case R.id.buttonSetMovie:
+                System.out.println("param");
+                break;
+        }
+    }
 
     public void addMovie() {
         if (MainAuthentication.user == null) {

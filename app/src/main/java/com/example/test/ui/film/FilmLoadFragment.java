@@ -13,9 +13,6 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
-import com.example.test.firebase.MainAuthentication;
-import com.example.test.firebase.Movie;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -113,20 +110,6 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
             });
-            //addMovie();
-        }
-    }
-
-    public void addMovie() {
-        if (MainAuthentication.user == null) {
-            System.out.println("No user is signed in"); // TODO
-        } else {
-            System.out.println("User is signed in");
-            System.out.println("test time : " + imbdID);
-
-            Movie movie = new Movie(imbdID, "note", "rating");
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            db.collection("users").document(uid).collection("movies").add(movie);
         }
     }
 }

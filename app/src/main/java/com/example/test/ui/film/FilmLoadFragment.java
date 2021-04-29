@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
-    public String json, imbdID, title, year;
+    public String json, imbdID, title, year, country;
     ImageView imageViewFilmLayout;
     TextView textFilmLayoutTitle;
     TextView textFilmLayoutRuntime;
@@ -91,6 +91,8 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
             title = jsonO.get("Title").toString();
             year = jsonO.get("Year").toString();
+            country = jsonO.get("Country").toString();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -108,12 +110,10 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
             bundle.putString("imdbID", imbdID);
             bundle.putString("title", title);
             bundle.putString("year", year);
+            bundle.putString("country", country);
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
             });
         }
-    }
-
-
     }
 }

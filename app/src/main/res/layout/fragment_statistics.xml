@@ -4,15 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBack"
     tools:context=".ui.statistics.StatisticsFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutStats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="67dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorGravity="bottom"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="@color/colorAccent">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabCountry"
@@ -30,13 +37,15 @@
             android:id="@+id/tabViewedFilm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Viewed" />
+            android:text="Viewed"
+            android:visibility="invisible"
+            tools:visibility="invisible" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
-        android:layout_width="325dp"
-        android:layout_height="427dp"
+        android:layout_width="336dp"
+        android:layout_height="543dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -14,10 +14,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
 import com.example.test.firebase.MainAuthentication;
-//import com.example.test.firebase.Movie;
+import com.example.test.firebase.Movie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+//import com.example.test.firebase.Movie;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -56,7 +58,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
 
             System.out.println("User is signed in");
-            Movie movie = new Movie("imbdID", "note", "rating");
+            Movie movie = new Movie("imbdID", "note", "rating", "jh");
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             db.collection("users").document(uid).collection("movies").add(movie);
             readDocs();

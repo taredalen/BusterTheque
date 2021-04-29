@@ -24,73 +24,56 @@ import java.util.concurrent.Executors;
 
 
 public class DecadeFragment extends Fragment {
+    private BarChart barchart;
+    private HashMap<String, Integer> map;
+    private ArrayList<String> decadeArray = new ArrayList<>();
+    private ArrayList<BarEntry> noByDecadeArray = new ArrayList<>();
 
-BarChart barchart;
-HashMap<String, Integer> map;
-ArrayList<String> decadeArray = new ArrayList<>();
-ArrayList<BarEntry> noByDecadeArray = new ArrayList<>();
-
-
-public DecadeFragment() {
-    // Required empty public constructor
-}
-
-@Override
-public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-        map = (HashMap<String, Integer>) getArguments().getSerializable("hashmap");
+    public DecadeFragment() {
     }
-}
+    @Override
 
-@Override
-public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                         Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    View root = inflater.inflate(R.layout.fragment_decade, container, false);
-
-    barchart = root.findViewById(R.id.barChartDecade);
-
-    setData();
-
-
-
-    return root;
-}
-
-private void setData() {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    ProgressDialog p = new ProgressDialog(getActivity());
-    p.setMessage("please wait");
-    p.setIndeterminate(false);
-    p.setCancelable(false);
-    p.show();
-    executor.execute(() -> {
-        int i = 0;
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            noByDecadeArray.add(new BarEntry(entry.getValue(), i));
-            decadeArray.add(entry.getKey());
-            i++;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            map = (HashMap<String, Integer>) getArguments().getSerializable("hashmap");
         }
-        BarDataSet barDataSet = new BarDataSet(noByDecadeArray, "Film viewed");
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_decade, container, false);
 
-        BarData data = new BarData(decadeArray, barDataSet);
-        data.setValueTextSize(10);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        XAxis xAxis = barchart.getXAxis();
-        xAxis.setLabelsToSkip(0);
-        getActivity().runOnUiThread(()-> {
-            barchart.setData(data);
-            p.hide();
-            p.cancel();
+        barchart = root.findViewById(R.id.barChartDecade);
+        setData();
+        return root;
+    }
+
+    private void setData() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ProgressDialog p = new ProgressDialog(getActivity());
+        p.setMessage("please wait");
+        p.setIndeterminate(false);
+        p.setCancelable(false);
+        p.show();
+        executor.execute(() -> {
+            int i = 0;
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                noByDecadeArray.add(new BarEntry(entry.getValue(), i));
+                decadeArray.add(entry.getKey());
+                i++;
+            }
+            BarDataSet barDataSet = new BarDataSet(noByDecadeArray, "Film viewed");
+            BarData data = new BarData(decadeArray, barDataSet);
+            data.setValueTextSize(10);
+            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            XAxis xAxis = barchart.getXAxis();
+            xAxis.setLabelsToSkip(0);
+            getActivity().runOnUiThread(()-> {
+                barchart.setData(data);
+                p.hide();
+                p.cancel();
+            });
         });
-
-
-
-
-    });
-}
-
-
+    }
 }

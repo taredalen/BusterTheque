@@ -36,7 +36,7 @@
             app:tabIndicatorColor="@color/colorPrimary"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabTextColor="@color/colorPrimary" />
+            app:tabTextColor="@color/colorAccent" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

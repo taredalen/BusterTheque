@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.OmdbApi.OmdbApiSearch;
@@ -32,13 +31,13 @@ import java.util.concurrent.Executors;
 
 public class SearchFilmFragment extends Fragment implements RecyclerViewClickInterface {
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private ArrayList<MovieData> movieData;
-    boolean isScrolling = false;
-    int currentItems, totalItems, scrollOutItems;
-    MovieAdapter adapter;
-    String title;
-    View view;
+    private boolean isScrolling = false;
+    private int currentItems, totalItems, scrollOutItems;
+    private MovieAdapter adapter;
+    private String title;
+    private View view;
 
     public SearchFilmFragment() {
         // Required empty public constructor
@@ -51,9 +50,7 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_film, container, false);
         ImageButton btn = view.findViewById(R.id.searchButton);
 
@@ -66,17 +63,9 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        LinearLayoutManager layout = new LinearLayoutManager(getActivity());
+        GridLayoutManager layout = new GridLayoutManager(getActivity(), 2);
 
-        //LinearLayoutManager layout = new LinearLayoutManager(getActivity());
-
-        GridLayoutManager layout2 = new GridLayoutManager(getActivity(), 2);
-
-
-        recyclerView.setLayoutManager(layout2);
-
-        //recyclerView.setLayoutManager(layout);
-
+        recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(adapter);
 
         btn.setOnClickListener(v -> {
@@ -93,13 +82,12 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
                     isScrolling = true;
                 }
             }
-
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                currentItems = layout2.getChildCount();
-                totalItems = layout2.getItemCount();
-                scrollOutItems = layout2.findFirstVisibleItemPosition();
+                currentItems = layout.getChildCount();
+                totalItems = layout.getItemCount();
+                scrollOutItems = layout.findFirstVisibleItemPosition();
 
                 if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
                     isScrolling = false;
@@ -109,8 +97,6 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
                 }
             }
         });
-
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         return view;
     }
@@ -126,13 +112,11 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
             OmdbApiSearch o = new OmdbApiSearch(movieTitle, "63f3e471");
             try {
                 JSONArray listJson = o.getMovies(page);
-
                 if (listJson != null) {
                     for (int i = 0; i<listJson.length(); i++) {
                         movieData.add(new MovieData((JSONObject) listJson.get(i)));
                     }
                 }
-                //adapter = new MovieAdapter(MainActivity.this, movieData, MainActivity.this);
                 getActivity().runOnUiThread(() -> {
                     if (listJson == null) {
                         Toast.makeText(getActivity(), "no movie found", Toast.LENGTH_LONG).show();
@@ -162,14 +146,13 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
                 e.printStackTrace();
             }
             Bundle bundle = new Bundle();
-            bundle.putString("json", json.toString());
 
+            bundle.putString("json", json.toString());
             bundle.putString("ID", id);
 
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_nav_film_display, bundle);
             });
-
         });
     }
 }

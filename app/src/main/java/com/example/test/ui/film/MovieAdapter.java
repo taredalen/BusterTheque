@@ -17,8 +17,6 @@ import com.example.test.R;
 
 import java.util.ArrayList;
 
-//import com.bumptech.glide.Glide;
-
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -39,9 +37,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             textViewYear = itemView.findViewById(R.id.textViewYear);
             imageViewPoster = itemView.findViewById(R.id.imageViewPoster);
             itemView.setOnClickListener(v -> recyclerViewClickInterface.onItemClick(getAdapterPosition()));
-
         }
-
     }
 
     public MovieAdapter(Context context, ArrayList<MovieData> movie, RecyclerViewClickInterface recyclerViewClickInterface) {
@@ -49,7 +45,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.movie = movie;
         this.recyclerViewClickInterface = recyclerViewClickInterface;
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
@@ -64,23 +59,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder holder, int position) {
         holder.textViewTitle.setText(movie.get(position).title);
         holder.textViewYear.setText(movie.get(position).year);
-        //Glide.with(context).load(movie.get(position).poster)
-        //        .placeholder(R.drawable.ic_launcher_background).into(holder.imageViewPoster);
 
         if (!movie.get(position).poster.equals("N/A")) {
-            Glide.with(context).load(movie.get(position).poster)
-                    .placeholder(R.drawable.buster).into(holder.imageViewPoster);
+            Glide.with(context).load(movie.get(position).poster).placeholder(R.drawable.gradient).into(holder.imageViewPoster);
         } else {
-            Glide.with(context).load(R.drawable.buster).into(holder.imageViewPoster);
-
+            Glide.with(context).load(R.drawable.gradient).into(holder.imageViewPoster);
         }
-
-        /*if (!movie.get(position).poster.equals("N/A")) {
-            Log.d("msg", movie.get(position).poster);
-            Glide.with(context).load(movie.get(position).poster)
-                    .placeholder(R.drawable.ic_launcher_background).into(holder.imageViewPoster);
-        }*/
-
     }
 
     @Override

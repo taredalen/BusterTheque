@@ -63,7 +63,7 @@ public class BlankFragmentWatched extends Fragment implements RecyclerViewClickI
     public void readDocs(){
         ArrayList<String> list = new ArrayList<>();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        db.collection("users").document(uid).collection("movies").get().addOnCompleteListener(task -> {
+        db.collection("users").document(uid).collection("watched").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d("DOCS", document.getId() + " => " + document.getString("imdbID"));

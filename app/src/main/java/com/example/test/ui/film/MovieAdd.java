@@ -1,6 +1,5 @@
 package com.example.test.ui.film;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
@@ -19,11 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.time.LocalDate;
-
 public class MovieAdd extends Fragment implements View.OnClickListener {
 
-    private String imbdID, title, year, stringNote;
+    private String imbdID, title, year, stringNote, country;
     private Button buttonAddWatched, buttonAddWishlist;
     private TextView textMovieTitle, textMovieYear;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -38,6 +34,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
             imbdID = getArguments().getString("imdbID");
             title = getArguments().getString("title");
             year = getArguments().getString("year");
+            country = getArguments().getString("country");
         }
     }
 
@@ -86,7 +83,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                 stringNote = " ";
             }
 
-            Movie movie = new Movie(imbdID, stringNote, "rating");
+            Movie movie = new Movie(imbdID, stringNote, "rating", country);
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             DocumentReference documentReference =  db.collection("users").document(uid).collection("watched").document(imbdID);
@@ -113,7 +110,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                 stringNote = " ";
             }
 
-            Movie movie = new Movie(imbdID, stringNote, "rating");
+            Movie movie = new Movie(imbdID, stringNote, "rating", country);
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             DocumentReference documentReference =  db.collection("users").document(uid).collection("wishlist").document(imbdID);

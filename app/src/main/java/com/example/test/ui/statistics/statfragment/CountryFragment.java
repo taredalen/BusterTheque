@@ -25,74 +25,60 @@ import java.util.concurrent.Executors;
 
 
 public class CountryFragment extends Fragment {
+    private PieChart pieChart;
+    private HashMap<String, Integer> map;
+    private ArrayList<String> countryArray = new ArrayList<>();
+    private ArrayList<Entry> noByCountryArray = new ArrayList<>();
+    private ArrayList<String[]> movieListForStat = new ArrayList();
 
-PieChart pieChart;
-HashMap<String, Integer> map;
-ArrayList<String> countryArray = new ArrayList<>();
-ArrayList<Entry> noByCountryArray = new ArrayList<>();
-private ArrayList<String[]> movieListForStat = new ArrayList();
-
-
-public CountryFragment() {
-    // Required empty public constructor
-}
-
-
-@Override
-public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-        Log.d("MSG", "print1");
-        map = (HashMap<String, Integer>) getArguments().getSerializable("hashmap");
+    public CountryFragment() {
+        // Required empty public constructor
     }
-}
 
-@Override
-public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                         Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    View root = inflater.inflate(R.layout.fragment_country, container, false);
-
-
-    pieChart = root.findViewById(R.id.piechart);
-
-    setData();
-
-
-    return root;
-}
-
-private void setData() {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    ProgressDialog p = new ProgressDialog(getActivity());
-    p.setMessage("please wait");
-    p.setIndeterminate(false);
-    p.setCancelable(false);
-    p.show();
-
-    executor.execute(() -> {
-        int i = 0;
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            noByCountryArray.add(new BarEntry(entry.getValue(), i));
-            countryArray.add(entry.getKey());
-            i++;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            Log.d("MSG", "print1");
+            map = (HashMap<String, Integer>) getArguments().getSerializable("hashmap");
         }
-        PieDataSet barDataSet = new PieDataSet(noByCountryArray, "Film viewed");
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_country, container, false);
+        pieChart = root.findViewById(R.id.piechart);
+        setData();
+        return root;
+    }
 
-        PieData data = new PieData(countryArray, barDataSet);
-        data.setValueTextSize(10);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+    private void setData() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ProgressDialog p = new ProgressDialog(getActivity());
+        p.setMessage("please wait");
+        p.setIndeterminate(false);
+        p.setCancelable(false);
+        p.show();
 
-        getActivity().runOnUiThread(()-> {
-            pieChart.setData(data);
-            p.hide();
-            p.cancel();
+        executor.execute(() -> {
+            int i = 0;
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                noByCountryArray.add(new BarEntry(entry.getValue(), i));
+                countryArray.add(entry.getKey());
+                i++;
+            }
+            PieDataSet barDataSet = new PieDataSet(noByCountryArray, "Film viewed");
+
+            PieData data = new PieData(countryArray, barDataSet);
+            data.setValueTextSize(10);
+            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+            getActivity().runOnUiThread(()-> {
+                pieChart.setData(data);
+                p.hide();
+                p.cancel();
+            });
         });
-
-
-
-
-    });
-}
+    }
 }

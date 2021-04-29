@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
 import com.example.test.firebase.MainAuthentication;
-import com.example.test.firebase.Movie;
+//import com.example.test.firebase.Movie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -49,9 +49,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             System.out.println("No user is signed in");
         } else {
             System.out.println("User is signed in");
-            Movie movie = new Movie("testimdbID", "some description", "some grade");
+            //Movie movie = new Movie("testimdbID", "some description", "some grade");
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            db.collection("users").document(uid).collection("movies").add(movie);
+            //db.collection("users").document(uid).collection("movies").add(movie);
         }
     }
 }

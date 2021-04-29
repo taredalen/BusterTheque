@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.test.R;
 import com.example.test.firebase.MainAuthentication;
-import com.example.test.firebase.Movie;
+//import com.example.test.firebase.Movie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -113,9 +113,9 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
             System.out.println("User is signed in");
             System.out.println("test time : " + imbdID);
 
-            Movie movie = new Movie(imbdID, "note", "rating");
+            //Movie movie = new Movie(imbdID, "note", "rating");
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            db.collection("users").document(uid).collection("movies").add(movie);
+            //db.collection("users").document(uid).collection("movies").add(movie);
         }
     }
 }

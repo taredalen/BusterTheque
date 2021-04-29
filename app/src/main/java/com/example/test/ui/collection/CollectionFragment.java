@@ -48,7 +48,7 @@ private void setupViewPager(ViewPager viewPager) {
 
     Adapter adapter = new Adapter(getChildFragmentManager());
     adapter.addFragment(new BlankFragmentWatched(), "1");
-    adapter.addFragment(new BlankFragmentWishList(), "2");
+    //adapter.addFragment(new BlankFragmentWishList(), "2");
 
     viewPager.setAdapter(adapter);
 

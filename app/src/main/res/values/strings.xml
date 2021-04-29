@@ -38,9 +38,8 @@
     <string name="menu_film">SEARCH FILM</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="search">search</string>
+
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">1fragment</string>
     <string name="one" />
     <string name="large_text">
         "Material is the metaphor.\n\n"

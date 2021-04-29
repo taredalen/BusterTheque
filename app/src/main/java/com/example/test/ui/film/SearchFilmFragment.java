@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,7 +65,8 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager layout = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layout);
+        GridLayoutManager layout2 = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(layout2);
         recyclerView.setAdapter(adapter);
 
         btn.setOnClickListener(v -> {
@@ -85,9 +87,9 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                currentItems = layout.getChildCount();
-                totalItems = layout.getItemCount();
-                scrollOutItems = layout.findFirstVisibleItemPosition();
+                currentItems = layout2.getChildCount();
+                totalItems = layout2.getItemCount();
+                scrollOutItems = layout2.findFirstVisibleItemPosition();
 
                 if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
                     isScrolling = false;

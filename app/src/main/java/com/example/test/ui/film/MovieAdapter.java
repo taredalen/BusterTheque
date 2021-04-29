@@ -15,9 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.test.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 //import com.bumptech.glide.Glide;
@@ -75,6 +72,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     .placeholder(R.drawable.buster).into(holder.imageViewPoster);
         } else {
             Glide.with(context).load(R.drawable.buster).into(holder.imageViewPoster);
+
         }
 
         /*if (!movie.get(position).poster.equals("N/A")) {

@@ -9,12 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
-import com.example.test.firebase.MainAuthentication;
-//import com.example.test.firebase.Movie;
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -23,19 +22,18 @@ import org.json.JSONObject;
 
 public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
-    public String json;
-    public String imbdID;
+    public String json, imbdID, title, year;
     ImageView imageViewFilmLayout;
     TextView textFilmLayoutTitle;
     TextView textFilmLayoutRuntime;
     TextView textFilmLayoutYear;
-    TextView textFilmLayoutCast;
     TextView textFilmLayoutPlot;
     TextView textFilmLayoutGenre;
     TextView textFilmLayoutCountry;
     TextView textFilmLayoutDirector;
-    TextView textFilmLayoutWriter;
-    TextView textFilmLayoutLanguage;
+    TextView textFilmLayoutRating;
+
+    View view;
 
     private Button buttonAddMovie;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -58,18 +56,19 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.film_layout, container, false);
+        view =  inflater.inflate(R.layout.film_layout, container, false);
         imageViewFilmLayout = view.findViewById(R.id.imageViewFilmLayoutPoster);
-        textFilmLayoutCast = view.findViewById(R.id.textFilmLayoutCast);
+        //textFilmLayoutCast = view.findViewById(R.id.textFilmLayoutCast);
         textFilmLayoutCountry = view.findViewById(R.id.textFilmLayoutCountry);
         textFilmLayoutDirector = view.findViewById(R.id.textFilmLayoutDirector);
-        textFilmLayoutTitle = view.findViewById(R.id.textFilmLayoutTitle);
+        textFilmLayoutTitle = view.findViewById(R.id.textMovieTitle);
         textFilmLayoutRuntime = view.findViewById(R.id.textFilmLayoutRuntime);
         textFilmLayoutYear = view.findViewById(R.id.textFilmLayoutYear);
         textFilmLayoutPlot = view.findViewById(R.id.textFilmLayoutPlot);
         textFilmLayoutGenre = view.findViewById(R.id.textFilmLayoutGenre);
-        textFilmLayoutWriter = view.findViewById(R.id.textFilmLayoutWriter);
-        textFilmLayoutLanguage = view.findViewById(R.id.textFilmLayoutLanguage);
+        //textFilmLayoutWriter = view.findViewById(R.id.textFilmLayoutWriter);
+        //textFilmLayoutLanguage = view.findViewById(R.id.textFilmLayoutLanguage);
+        textFilmLayoutRating = view.findViewById(R.id.textFilmLayoutRating);
 
         try {
             JSONObject jsonO = new JSONObject(json);
@@ -78,17 +77,20 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
                         .placeholder(R.drawable.gradient).into(imageViewFilmLayout);
             }
             textFilmLayoutDirector.setText(jsonO.get("Director").toString());
-            textFilmLayoutCast.setText(jsonO.get("Actors").toString());
             textFilmLayoutGenre.setText(jsonO.get("Genre").toString());
-            textFilmLayoutLanguage.setText(jsonO.get("Language").toString());
             textFilmLayoutYear.setText(jsonO.get("Year").toString());
             textFilmLayoutPlot.setText(jsonO.get("Plot").toString());
             textFilmLayoutCountry.setText(jsonO.get("Country").toString());
             textFilmLayoutRuntime.setText(jsonO.get("Runtime").toString());
-            textFilmLayoutWriter.setText(jsonO.get("Writer").toString());
             textFilmLayoutTitle.setText(jsonO.get("Title").toString());
+            textFilmLayoutRating.setText(jsonO.get("imdbRating").toString());
 
+            //textFilmLayoutCast.setText(jsonO.get("Actors").toString());
+            //textFilmLayoutLanguage.setText(jsonO.get("Language").toString());
+            //textFilmLayoutWriter.setText(jsonO.get("Writer").toString());
 
+            title = jsonO.get("Title").toString();
+            year = jsonO.get("Year").toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -102,20 +104,16 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAddMovie) {
-            addMovie();
+            Bundle bundle = new Bundle();
+            bundle.putString("imdbID", imbdID);
+            bundle.putString("title", title);
+            bundle.putString("year", year);
+            getActivity().runOnUiThread(() -> {
+                Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
+            });
         }
     }
 
-    public void addMovie() {
-        if (MainAuthentication.user == null) {
-            System.out.println("No user is signed in"); // TODO
-        } else {
-            System.out.println("User is signed in");
-            System.out.println("test time : " + imbdID);
 
-            //Movie movie = new Movie(imbdID, "note", "rating");
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            //db.collection("users").document(uid).collection("movies").add(movie);
-        }
     }
 }

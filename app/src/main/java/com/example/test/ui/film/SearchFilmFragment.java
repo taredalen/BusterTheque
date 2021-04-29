@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.OmdbApi.OmdbApiSearch;
@@ -65,8 +64,12 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager layout = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        //LinearLayoutManager layout = new LinearLayoutManager(getActivity());
+
+        GridLayoutManager layout2 = new GridLayoutManager(getActivity(), 2);
+
+
+        recyclerView.setLayoutManager(layout2);
 
         //recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(adapter);
@@ -89,9 +92,9 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                currentItems = layout.getChildCount();
-                totalItems = layout.getItemCount();
-                scrollOutItems = layout.findFirstVisibleItemPosition();
+                currentItems = layout2.getChildCount();
+                totalItems = layout2.getItemCount();
+                scrollOutItems = layout2.findFirstVisibleItemPosition();
 
                 if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
                     isScrolling = false;

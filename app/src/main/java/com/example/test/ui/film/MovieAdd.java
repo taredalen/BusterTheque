@@ -1,5 +1,6 @@
 package com.example.test.ui.film;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
@@ -16,6 +18,8 @@ import com.example.test.firebase.Movie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.time.LocalDate;
 
 public class MovieAdd extends Fragment implements View.OnClickListener {
 
@@ -97,7 +101,6 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         }
     }
 
-
     public void addMovieWishlist() {
         if (MainAuthentication.user == null) {
             System.out.println("No user is signed in"); // TODO
@@ -109,6 +112,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
             if(stringNote.length() == 0 ) {
                 stringNote = " ";
             }
+
             Movie movie = new Movie(imbdID, stringNote, "rating");
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

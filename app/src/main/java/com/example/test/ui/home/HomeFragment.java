@@ -1,5 +1,6 @@
 package com.example.test.ui.home;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
@@ -34,6 +36,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -51,6 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         if (MainAuthentication.user == null) {
             System.out.println("No user is signed in"); // TODO
         } else {
+
             System.out.println("User is signed in");
             Movie movie = new Movie("imbdID", "note", "rating");
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();

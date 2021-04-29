@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
 import com.example.test.firebase.MainAuthentication;
-import com.example.test.firebase.Movie;
+//import com.example.test.firebase.Movie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;

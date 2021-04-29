@@ -69,9 +69,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         if (!movie.get(position).poster.equals("N/A")) {
             Glide.with(context).load(movie.get(position).poster)
-                    .placeholder(R.drawable.gradient).into(holder.imageViewPoster);
+                    .placeholder(R.drawable.buster).into(holder.imageViewPoster);
         } else {
-            Glide.with(context).load(R.drawable.gradient).into(holder.imageViewPoster);
+            Glide.with(context).load(R.drawable.buster).into(holder.imageViewPoster);
+
         }
 
         /*if (!movie.get(position).poster.equals("N/A")) {

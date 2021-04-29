@@ -20,6 +20,8 @@ import java.util.List;
 
 public class CollectionFragment extends Fragment {
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

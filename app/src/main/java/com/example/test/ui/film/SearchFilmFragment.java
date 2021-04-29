@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.OmdbApi.OmdbApiSearch;
@@ -64,6 +65,9 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+        LinearLayoutManager layout = new LinearLayoutManager(getActivity());
+
         //LinearLayoutManager layout = new LinearLayoutManager(getActivity());
 
         GridLayoutManager layout2 = new GridLayoutManager(getActivity(), 2);
@@ -72,6 +76,7 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
         recyclerView.setLayoutManager(layout2);
 
         //recyclerView.setLayoutManager(layout);
+
         recyclerView.setAdapter(adapter);
 
         btn.setOnClickListener(v -> {

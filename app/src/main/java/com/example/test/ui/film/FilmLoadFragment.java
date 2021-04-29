@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -111,5 +112,8 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
             });
         }
+    }
+
+
     }
 }

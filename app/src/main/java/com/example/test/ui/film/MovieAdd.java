@@ -34,6 +34,9 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
             imbdID = getArguments().getString("imdbID");
             title = getArguments().getString("title");
             year = getArguments().getString("year");
+            System.out.println("-------------------------------------------------------------------------------");
+
+            System.out.println(year);
             country = getArguments().getString("country");
         }
     }
@@ -83,7 +86,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                 stringNote = " ";
             }
 
-            Movie movie = new Movie(imbdID, stringNote, "rating", country);
+            Movie movie = new Movie(imbdID, stringNote, "rating", country, year);
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             DocumentReference documentReference =  db.collection("users").document(uid).collection("watched").document(imbdID);
@@ -110,7 +113,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                 stringNote = " ";
             }
 
-            Movie movie = new Movie(imbdID, stringNote, "rating", country);
+            Movie movie = new Movie(imbdID, stringNote, "rating", country, year);
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             DocumentReference documentReference =  db.collection("users").document(uid).collection("wishlist").document(imbdID);

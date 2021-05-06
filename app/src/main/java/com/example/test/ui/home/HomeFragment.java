@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
 
             System.out.println("User is signed in");
-            Movie movie = new Movie("imbdID", "note", "rating", "jh");
+            Movie movie = new Movie("imbdID", "stringNote", "rating", "country", "year");
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             db.collection("users").document(uid).collection("movies").add(movie);
             readDocs();

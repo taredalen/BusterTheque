@@ -69,6 +69,10 @@ public class DecadeFragment extends Fragment {
             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
             XAxis xAxis = barchart.getXAxis();
             xAxis.setLabelsToSkip(0);
+
+           // xAxis.setTextColor(Color.WHITE);
+           // xAxis.setValueTextColors(Color.WHITE);
+            //barchart.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             getActivity().runOnUiThread(()-> {
                 barchart.setData(data);
                 p.hide();

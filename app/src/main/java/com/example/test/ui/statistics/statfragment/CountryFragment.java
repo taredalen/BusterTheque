@@ -70,6 +70,7 @@ public class CountryFragment extends Fragment {
             }
             PieDataSet barDataSet = new PieDataSet(noByCountryArray, "Film viewed");
 
+
             PieData data = new PieData(countryArray, barDataSet);
             data.setValueTextSize(10);
             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);

@@ -1,6 +1,7 @@
 package com.example.test.ui.statistics;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import com.example.test.R;
 import com.example.test.ui.statistics.statfragment.CountryFragment;
 import com.example.test.ui.statistics.statfragment.DecadeFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,14 +27,37 @@ import java.util.List;
 public class StatisticsFragment extends Fragment {
     private StatisticsViewModel statisticsViewModel;
     private ArrayList<String[]> movieListForStat = new ArrayList();
-    TabLayout tabLayoutStats, tabCountry, tabDecade, tabViewedFilm;
+    private TabLayout tabLayoutStats, tabCountry, tabDecade, tabViewedFilm;
     ViewPager viewPager;
     HashMap<String, Integer> movieDecadeStats, movieCountryStats;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        movieListForStat.add(new String[]{"tt0060196", "1926", "France, Spain, West Germany, USA"});
+public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+        ArrayList<String> list = new ArrayList<>();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        db.collection("users").document(uid).collection("watched").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Log.d("DOCS", document.getId() + " => " + document.getString("imdbID"));
+                    String imdb = document.getString("imdbID");
+                    String year = document.getString("year");
+                    String country = document.getString("country");
+
+                    String[] l = new String[]{imdb, year, country};
+
+                    movieListForStat.add(l);
+                }
+                System.out.println("---------------------------------------------------------------------");
+                System.out.println(list);
+            } else {
+                Log.d("DOCS", "Error getting documents: ", task.getException());
+            }
+        });
+        /*movieListForStat.add(new String[]{"tt0060196", "1926", "France, Spain, West Germany, USA"});
         movieListForStat.add(new String[]{"tt0060196", "1892", "Italy, Spain, West Germany, USA"});
         movieListForStat.add(new String[]{"tt0060196", "1936", "Russia, Spain, West Germany, USA"});
         movieListForStat.add(new String[]{"tt0060196", "1976", "Italy, Spain, USA"});
@@ -38,7 +65,7 @@ public class StatisticsFragment extends Fragment {
         movieListForStat.add(new String[]{"tt0060196", "1906", "Italy, Spain"});
         movieListForStat.add(new String[]{"tt0060196", "1916", "Italy"});
         movieListForStat.add(new String[]{"tt0060196", "1986", "Italy, Spain, West Germany, USA"});
-
+        */
         movieDecadeStats = new HashMap<>();
         movieCountryStats = new HashMap<>();
 

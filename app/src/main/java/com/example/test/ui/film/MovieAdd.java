@@ -1,6 +1,7 @@
 package com.example.test.ui.film;
 
 import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,14 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
 import com.example.test.firebase.MainAuthentication;
 import com.example.test.firebase.Movie;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,7 +35,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
     public String imbdID, title, year, stringNote, country, uid, collection;
     public TextView textMovieTitle, textMovieYear;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public Button buttonAdd, buttonDelete, buttonEdit;
+    public Button buttonAdd, buttonDelete, buttonEdit, buttonShare, buttonMark;
     public EditText editTextNote;
 
     public String[] listItems;
@@ -59,10 +58,13 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
             selectedItems = Arrays.asList(listItems);
 
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            updateNote();
+            if(!collection.equals("null")){
+                updateNote();
+            }
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -76,10 +78,13 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         buttonAdd = view.findViewById(R.id.add_button);
         buttonDelete = view.findViewById(R.id.del_button);
         buttonEdit = view.findViewById(R.id.edit_button);
+        buttonShare = view.findViewById(R.id.share_button);
+        buttonMark = view.findViewById(R.id.bookmark);
 
         buttonAdd.setOnClickListener(this);
         buttonDelete.setOnClickListener(this);
         buttonEdit.setOnClickListener(this);
+        buttonShare.setOnClickListener(this);
 
         editTextNote = view.findViewById(R.id.editTextNote);
 
@@ -88,6 +93,14 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         String currentDateandTime = sdf.format(new Date());
         textView.setText(currentDateandTime);
 
+        if(collection.equals("null")){
+            buttonDelete.setBackgroundResource(R.drawable.trash_grey);
+            buttonEdit.setBackgroundResource(R.drawable.check_grey);
+            buttonShare.setBackgroundResource(R.drawable.share_grey);
+        }
+        else{
+            buttonMark.setBackgroundResource(R.drawable.bookmark_yellow);
+        }
         return view;
     }
 
@@ -106,21 +119,16 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         }
     }
     public void updateNote(){
-        db.collection("users").document(uid).collection("watched").get().addOnCompleteListener(task -> {
+        db.collection("users").document(uid).collection(collection).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("DOCS", document.getId() + " => " + document.getString("note"));
-                    editTextNote.setText(document.getString("note"));
-                }
-            } else {
-                Log.d("DOCS", "Error getting documents: ", task.getException());
-            }
-        });
-        db.collection("users").document(uid).collection("wishlist").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("DOCS", document.getId() + " => " + document.getString("note"));
-                    editTextNote.setText(document.getString("note"));
+                    if(document.getId().equals(imbdID)){
+                        Log.d("DOCS", document.getId() + " => " + document.getString("note"));
+                        editTextNote.setText(document.getString("note"));
+                        String note = document.getString("note");
+                        editTextNote.setText(note);
+                        Log.d("UPD", note);
+                    }
                 }
             } else {
                 Log.d("DOCS", "Error getting documents: ", task.getException());
@@ -148,12 +156,19 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
 
                         Movie movie = new Movie(imbdID, stringNote, "rating", country, year);
                         DocumentReference documentReference =  db.collection("users").document(uid).collection(selectedItems.get(i)).document(imbdID);
-                        documentReference.set(movie).addOnCompleteListener(task1 -> {
-                            if(task1.isSuccessful()){
-                                Toast.makeText(getActivity(), "Movie saved", Toast.LENGTH_LONG).show();
+                        documentReference.get().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                documentReference.set(movie).addOnCompleteListener(task1 -> {
+                                    if(task1.isSuccessful()){
+                                        Toast.makeText(getActivity(), "Movie saved" , Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        Toast.makeText(getActivity(), "Save erreur", Toast.LENGTH_LONG).show();
+                                    }
+                                });
                             }
                             else {
-                                Toast.makeText(getActivity(), "Erreur", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Movie already saved!", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -161,8 +176,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
             }
         });
 
-        builder.setNegativeButton("CANCEL", (dialog, which) -> {
-        });
+        builder.setNegativeButton("CANCEL", (dialog, which) -> { });
 
         builder.create();
 
@@ -171,68 +185,22 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
     }
 
     public void deleteMovie() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete from collection : ");
-
-        builder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
-            checkedItems[which] = isChecked;
-            String currentItem = selectedItems.get(which);
-        });
-        builder.setPositiveButton("Delete", (dialog, which) -> {
-            for (int i = 0; i < checkedItems.length; i++) {
-                if (checkedItems[i]) {
-                    if (MainAuthentication.user == null) {
-                        Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        db.collection("users").document(uid).collection(collection).document(imbdID).delete()
-                                .addOnSuccessListener(aVoid -> {
-                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                    Toast.makeText(getActivity(), "Movie successfully deleted!", Toast.LENGTH_SHORT).show();
-                                })
-                                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
-                    }
-                }
-            }
-        });
-
-        builder.setNegativeButton("CANCEL", (dialog, which) -> {
-        });
-
-        builder.create();
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        db.collection("users").document(uid).collection(collection).document(imbdID).delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    Toast.makeText(getActivity(), "Movie successfully deleted!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
     }
 
     private void editMovie(){
+        String note = editTextNote.getText().toString().trim();
 
-        DocumentReference ref = db.collection("users").document(uid).collection("watched").document(imbdID);
-        ref.update("note", "test123" ).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                        Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
-            }
-        });
-        DocumentReference ref2 = db.collection("users").document(uid).collection("wishlist").document(imbdID);
-        ref.update("note", "test123" ).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "DocumentSnapshot successfully updated!");
-                Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
-            }
-        });
+        db.collection("users").document(uid).collection(collection).document(imbdID)
+                .update("note", note).addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
     }
 
     /*

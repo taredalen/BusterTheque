@@ -36,7 +36,6 @@ public class BlankFragmentWishList extends Fragment implements RecyclerViewClick
     public MovieAdapter adapter;
     public View view;
     public final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public String collection;
 
     public BlankFragmentWishList() { }
 
@@ -115,7 +114,7 @@ public class BlankFragmentWishList extends Fragment implements RecyclerViewClick
             Bundle bundle = new Bundle();
             bundle.putString("json", json.toString());
             bundle.putString("ID", id);
-            bundle.putString("wishlist", collection);
+            bundle.putString("collection", "wishlist");
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_nav_film_display, bundle);
             });

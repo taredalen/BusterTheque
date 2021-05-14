@@ -167,7 +167,7 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
 
             bundle.putString("json", json.toString());
             bundle.putString("ID", id);
-
+            bundle.putString("collection", "null" );
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_nav_film_display, bundle);
             });

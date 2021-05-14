@@ -8,18 +8,136 @@
     android:background="@color/colorBack"
     tools:context=".ui.film.MovieAdd" >
 
+
+    <Button
+        android:id="@+id/del_button"
+        android:layout_width="21dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="320dp"
+        android:layout_marginRight="320dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:contentDescription="@string/Search"
+        android:focusable="true"
+        android:foreground="@drawable/trash"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/searchButton4"
+        app:layout_constraintVertical_bias="0.051" />
+
+    <Button
+        android:id="@+id/searchButton4"
+        android:layout_width="18dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="252dp"
+        android:layout_marginRight="252dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:contentDescription="@string/Search"
+        android:focusable="true"
+        android:foreground="@drawable/share"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/add_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginEnd="168dp"
+        android:layout_marginRight="168dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:contentDescription="@string/Search"
+        android:focusable="true"
+        android:foreground="@drawable/plus_circle"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.051" />
+
+    <Button
+        android:id="@+id/searchButton6"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginRight="92dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:contentDescription="@string/Search"
+        android:focusable="true"
+        android:foreground="@drawable/star_2"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/add_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/edit_button"
+        android:layout_width="22dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:contentDescription="@string/Search"
+        android:focusable="true"
+        android:foreground="@drawable/edit_2"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/searchButton6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/searchButton6"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/bookmark"
+        android:layout_width="18dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#0000"
+        android:clickable="true"
+        android:contentDescription="@string/Search"
+        android:focusable="true"
+        android:foreground="@drawable/bookmark"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.051" />
+
     <View
-        android:id="@+id/view5"
-        android:layout_width="285dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/colorAccent"
+        android:id="@+id/viewTitleIndicator"
+        android:layout_width="3dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:background="@drawable/indicator"
+
+        app:layout_constraintBottom_toBottomOf="@+id/textMovieTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textMovieTitle" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="date"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.855" />
+        app:layout_constraintVertical_bias="0.059" />
 
     <View
         android:id="@+id/view6"
@@ -29,24 +147,27 @@
         android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105" />
+        app:layout_constraintVertical_bias="0.146" />
 
     <TextView
         android:id="@+id/textMovieTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="275dp"
+        android:layout_height="38dp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeTextType="uniform"
+        android:breakStrategy="balanced"
         android:text="title"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.048" />
+        app:layout_constraintVertical_bias="0.139" />
 
     <TextView
         android:id="@+id/textMovieYear"
@@ -55,57 +176,31 @@
         android:text="year"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.101" />
-
-    <Button
-        android:id="@+id/buttonAddWatched"
-        android:layout_width="126dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:background="#0000"
-        android:foreground="@drawable/add_watched"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAddWishlist"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942" />
-
-    <Button
-        android:id="@+id/buttonAddWishlist"
-        android:layout_width="126dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:background="#0000"
-        android:foreground="@drawable/add_wishlist"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/textMovieTitle"
+        app:layout_constraintEnd_toEndOf="@+id/view6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textMovieTitle"
+        app:layout_constraintTop_toTopOf="@+id/textMovieTitle"
+        app:layout_constraintVertical_bias="0.85"
+        tools:visibility="gone" />
 
     <EditText
         android:id="@+id/editTextNote"
-        android:layout_width="283dp"
-        android:layout_height="402dp"
+        android:layout_width="286dp"
+        android:layout_height="428dp"
+        android:background="@null"
         android:ems="10"
         android:gravity="fill_horizontal"
         android:inputType="textPersonName"
-        android:text="Comment"
+        android:text="Note"
         android:textColor="@color/colorAccent"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.636" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

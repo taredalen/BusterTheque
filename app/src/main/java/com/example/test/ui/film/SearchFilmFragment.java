@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,13 +33,15 @@ import java.util.concurrent.Executors;
 
 public class SearchFilmFragment extends Fragment implements RecyclerViewClickInterface {
 
-    private RecyclerView recyclerView;
-    private ArrayList<MovieData> movieData;
-    private boolean isScrolling = false;
-    private int currentItems, totalItems, scrollOutItems;
-    private MovieAdapter adapter;
-    private String title;
-    private View view;
+    public RecyclerView recyclerView;
+    public ArrayList<MovieData> movieData;
+    public boolean isScrolling = false;
+    public int currentItems, totalItems, scrollOutItems;
+    public MovieAdapter adapter;
+    public String title;
+    public View view;
+    public EditText txt;
+    public ImageButton btn;
 
     public SearchFilmFragment() {
         // Required empty public constructor
@@ -52,10 +56,10 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_film, container, false);
-        ImageButton btn = view.findViewById(R.id.searchButton);
+        btn = view.findViewById(R.id.searchButton);
+        txt = view.findViewById(R.id.editText);
 
-        EditText txt = view.findViewById(R.id.editText);
-
+        txt.setOnEditorActionListener(editorListener);
         movieData = new ArrayList<>();
 
         adapter = new MovieAdapter(getActivity(), movieData, this);
@@ -100,6 +104,20 @@ public class SearchFilmFragment extends Fragment implements RecyclerViewClickInt
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         return view;
     }
+
+
+    private TextView.OnEditorActionListener editorListener = (v, actionId, event) -> {
+        switch (actionId){
+            case EditorInfo.IME_ACTION_NEXT:
+                Toast.makeText(getActivity(), "next",Toast.LENGTH_SHORT).show();
+                break;
+            case EditorInfo.IME_ACTION_SEARCH:
+                title = txt.getText().toString();
+                movieData.clear();
+                addMovieToAdapter(title, 1);
+                break;
+        } return false;
+    };
 
     private void addMovieToAdapter(String movieTitle, int page ) {
         ExecutorService executor = Executors.newSingleThreadExecutor();

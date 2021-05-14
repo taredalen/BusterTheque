@@ -22,21 +22,21 @@ import org.json.JSONObject;
 
 public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
-    public String json, imbdID, title, year, country;
-    ImageView imageViewFilmLayout;
-    TextView textFilmLayoutTitle;
-    TextView textFilmLayoutRuntime;
-    TextView textFilmLayoutYear;
-    TextView textFilmLayoutPlot;
-    TextView textFilmLayoutGenre;
-    TextView textFilmLayoutCountry;
-    TextView textFilmLayoutDirector;
-    TextView textFilmLayoutRating;
+    public String json, imbdID, title, year, country, collection;
+    public ImageView imageViewFilmLayout;
+    public TextView textFilmLayoutTitle;
+    public TextView textFilmLayoutRuntime;
+    public TextView textFilmLayoutYear;
+    public TextView textFilmLayoutPlot;
+    public TextView textFilmLayoutGenre;
+    public TextView textFilmLayoutCountry;
+    public TextView textFilmLayoutDirector;
+    public TextView textFilmLayoutRating;
 
-    View view;
+    public View view;
 
-    private Button buttonAddMovie;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public Button buttonAddMovie;
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public FilmLoadFragment() {
         // Required empty public constructor
@@ -48,7 +48,7 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
         if (getArguments() != null) {
             json = getArguments().getString("json");
             imbdID = getArguments().getString("ID");
-
+            collection = getArguments().getString("collection");
         }
     }
 
@@ -111,6 +111,7 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
             bundle.putString("title", title);
             bundle.putString("year", year);
             bundle.putString("country", country);
+            bundle.putString("collection", collection);
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
             });

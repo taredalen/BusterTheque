@@ -1,32 +1,49 @@
 package com.example.test.ui.film;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
 import com.example.test.firebase.MainAuthentication;
 import com.example.test.firebase.Movie;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class MovieAdd extends Fragment implements View.OnClickListener {
 
-    private String imbdID, title, year, stringNote, country;
-    private Button buttonAddWatched, buttonAddWishlist;
-    private TextView textMovieTitle, textMovieYear;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private EditText editTextNote;
+    public String imbdID, title, year, stringNote, country, uid, collection;
+    public TextView textMovieTitle, textMovieYear;
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public Button buttonAdd, buttonDelete, buttonEdit;
+    public EditText editTextNote;
+
+    public String[] listItems;
+    public boolean[] checkedItems;
+    public List<String> selectedItems;
 
     public MovieAdd() { }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,30 +51,42 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
             imbdID = getArguments().getString("imdbID");
             title = getArguments().getString("title");
             year = getArguments().getString("year");
-            System.out.println("-------------------------------------------------------------------------------");
-
-            System.out.println(year);
             country = getArguments().getString("country");
+            collection = getArguments().getString("collection");
+
+            listItems = new String[]{"watched", "wishlist"};
+            checkedItems  = new boolean[listItems.length];
+            selectedItems = Arrays.asList(listItems);
+
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            updateNote();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_movie_add, container, false);
 
+        View view =  inflater.inflate(R.layout.fragment_movie_add, container, false);
         textMovieTitle = view.findViewById(R.id.textMovieTitle);
         textMovieYear = view.findViewById(R.id.textMovieYear);
 
         textMovieTitle.setText(title);
         textMovieYear.setText(year);
 
-        buttonAddWatched = view.findViewById(R.id.buttonAddWatched);
-        buttonAddWishlist = view.findViewById(R.id.buttonAddWishlist);
+        buttonAdd = view.findViewById(R.id.add_button);
+        buttonDelete = view.findViewById(R.id.del_button);
+        buttonEdit = view.findViewById(R.id.edit_button);
 
-        buttonAddWatched.setOnClickListener(this);
-        buttonAddWishlist.setOnClickListener(this);
+        buttonAdd.setOnClickListener(this);
+        buttonDelete.setOnClickListener(this);
+        buttonEdit.setOnClickListener(this);
 
         editTextNote = view.findViewById(R.id.editTextNote);
+
+        TextView textView = view.findViewById(R.id.date);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        String currentDateandTime = sdf.format(new Date());
+        textView.setText(currentDateandTime);
 
         return view;
     }
@@ -65,66 +94,214 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonAddWatched:
-                addMovieWatched();
+            case R.id.add_button:
+                addMovie();
                 break;
-            case R.id.buttonAddWishlist:
-                addMovieWishlist();
+            case R.id.del_button:
+                deleteMovie();
+                break;
+            case R.id.edit_button:
+                editMovie();
                 break;
         }
     }
-
-    public void addMovieWatched() {
-        if (MainAuthentication.user == null) {
-            System.out.println("No user is signed in"); // TODO
-        } else {
-            System.out.println("User is signed in");
-            System.out.println("test time : " + imbdID);
-
-            stringNote = editTextNote.getText().toString().trim();
-            if(stringNote.length() == 0 ) {
-                stringNote = " ";
+    public void updateNote(){
+        db.collection("users").document(uid).collection("watched").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Log.d("DOCS", document.getId() + " => " + document.getString("note"));
+                    editTextNote.setText(document.getString("note"));
+                }
+            } else {
+                Log.d("DOCS", "Error getting documents: ", task.getException());
             }
-
-            Movie movie = new Movie(imbdID, stringNote, "rating", country, year);
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-            DocumentReference documentReference =  db.collection("users").document(uid).collection("watched").document(imbdID);
-            documentReference.set(movie).addOnCompleteListener(task1 -> {
-                if(task1.isSuccessful()){
-                    System.out.println("added");
+        });
+        db.collection("users").document(uid).collection("wishlist").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Log.d("DOCS", document.getId() + " => " + document.getString("note"));
+                    editTextNote.setText(document.getString("note"));
                 }
-                else {
-                    System.out.println("erreur");
+            } else {
+                Log.d("DOCS", "Error getting documents: ", task.getException());
+            }
+        });
+    }
+
+    public void addMovie() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Add to collection : ");
+
+        builder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
+            checkedItems[which] = isChecked;
+            String currentItem = selectedItems.get(which);
+        });
+        builder.setPositiveButton("Done", (dialog, which) -> {
+            for (int i = 0; i < checkedItems.length; i++) {
+                if (checkedItems[i]) {
+                    if (MainAuthentication.user == null) {
+                        Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        stringNote = editTextNote.getText().toString().trim();
+                        if(stringNote.length() == 0 ) stringNote = " ";
+
+                        Movie movie = new Movie(imbdID, stringNote, "rating", country, year);
+                        DocumentReference documentReference =  db.collection("users").document(uid).collection(selectedItems.get(i)).document(imbdID);
+                        documentReference.set(movie).addOnCompleteListener(task1 -> {
+                            if(task1.isSuccessful()){
+                                Toast.makeText(getActivity(), "Movie saved", Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Erreur", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }
-            });
+            }
+        });
+
+        builder.setNegativeButton("CANCEL", (dialog, which) -> {
+        });
+
+        builder.create();
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void deleteMovie() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete from collection : ");
+
+        builder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
+            checkedItems[which] = isChecked;
+            String currentItem = selectedItems.get(which);
+        });
+        builder.setPositiveButton("Delete", (dialog, which) -> {
+            for (int i = 0; i < checkedItems.length; i++) {
+                if (checkedItems[i]) {
+                    if (MainAuthentication.user == null) {
+                        Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        db.collection("users").document(uid).collection(collection).document(imbdID).delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                    Toast.makeText(getActivity(), "Movie successfully deleted!", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+                    }
+                }
+            }
+        });
+
+        builder.setNegativeButton("CANCEL", (dialog, which) -> {
+        });
+
+        builder.create();
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void editMovie(){
+
+        DocumentReference ref = db.collection("users").document(uid).collection("watched").document(imbdID);
+        ref.update("note", "test123" ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+        DocumentReference ref2 = db.collection("users").document(uid).collection("wishlist").document(imbdID);
+        ref.update("note", "test123" ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+    }
+
+    /*
+    private void checkDocument(){
+
+        Task<DocumentSnapshot> documentRefWatched =  db.collection("users").document(uid).collection("watched").document(imbdID).get();
+        Task<DocumentSnapshot> documentRefWishlist=  db.collection("users").document(uid).collection("wishlist").document(imbdID).get();
+
+        if (documentRefWatched.isSuccessful()) {
+            collection = "watched";
+        } else {
+            if (documentRefWishlist.isSuccessful()) {
+                collection = "wishlist";
+            } else {
+                collection = "null";
+            }
         }
     }
 
-    public void addMovieWishlist() {
-        if (MainAuthentication.user == null) {
-            System.out.println("No user is signed in"); // TODO
-        } else {
-            System.out.println("User is signed in");
-            System.out.println("test time : " + imbdID);
+    private void checkDocument(){
 
-            stringNote = editTextNote.getText().toString().trim();
-            if(stringNote.length() == 0 ) {
-                stringNote = " ";
+        AtomicReference<String> collection = null;
+        db.collection("users").document(uid).collection("watched").document(imbdID).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                collection.set("watched");
+            } else {
+                collection.set("null");
             }
-
-            Movie movie = new Movie(imbdID, stringNote, "rating", country, year);
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-            DocumentReference documentReference =  db.collection("users").document(uid).collection("wishlist").document(imbdID);
-            documentReference.set(movie).addOnCompleteListener(task1 -> {
-                if(task1.isSuccessful()){
-                    System.out.println("added");
-                }
-                else {
-                    System.out.println("erreur");
-                }
-            });
-        }
+        });
+        db.collection("users").document(uid).collection("wishlist").document(imbdID).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                collection.set("wishlist");
+            } else {
+                collection.set("null");
+            }
+        });
     }
+
+    private String checkDocument(){
+        DocumentReference documentReference =  db.collection("users").document(uid).collection("watched").document(imbdID);
+        DocumentReference documentReference2 =  db.collection("users").document(uid).collection("wishlist").document(imbdID);
+
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    collection.equals("watched");
+                } else {
+                    Log.d(TAG, "No such document in watched");
+                    documentReference2.get().addOnCompleteListener(task2 -> {
+                        if (task2.isSuccessful()) {
+                            DocumentSnapshot document2 = task2.getResult();
+                            if (document2.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document2.getData());
+
+                                collection = "wishlist";
+                            } else {
+                                Log.d(TAG, "No such document in wishlist");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    });
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
+            }
+        });
+        return collection;
+    }*/
 }

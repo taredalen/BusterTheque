@@ -1,7 +1,7 @@
 package com.example.test.ui.film;
 
 import android.app.AlertDialog;
-import android.os.Build;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
@@ -30,12 +31,13 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
+
 public class MovieAdd extends Fragment implements View.OnClickListener {
 
     public String imbdID, title, year, stringNote, country, uid, collection;
     public TextView textMovieTitle, textMovieYear;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public Button buttonAdd, buttonDelete, buttonEdit, buttonShare, buttonMark;
+    public Button buttonAdd, buttonDelete, buttonEdit, buttonShare, buttonMark, buttonRating;
     public EditText editTextNote;
 
     public String[] listItems;
@@ -64,7 +66,6 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -80,11 +81,13 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         buttonEdit = view.findViewById(R.id.edit_button);
         buttonShare = view.findViewById(R.id.share_button);
         buttonMark = view.findViewById(R.id.bookmark);
+        buttonRating = view.findViewById(R.id.rating);
 
         buttonAdd.setOnClickListener(this);
         buttonDelete.setOnClickListener(this);
         buttonEdit.setOnClickListener(this);
         buttonShare.setOnClickListener(this);
+        buttonRating.setOnClickListener(this);
 
         editTextNote = view.findViewById(R.id.editTextNote);
 
@@ -116,8 +119,12 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
             case R.id.edit_button:
                 editMovie();
                 break;
+            case R.id.rating:
+                ratingMovie();
+                break;
         }
     }
+
     public void updateNote(){
         db.collection("users").document(uid).collection(collection).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -201,6 +208,69 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                     Log.d(TAG, "DocumentSnapshot successfully updated!");
                     Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();
                 }).addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
+    }
+
+    public void ratingMovie() {
+
+        Log.d(TAG, "ratingMovie clk ");
+
+        AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
+
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        final RatingBar rating = new RatingBar(getActivity());
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        rating.setLayoutParams(lp);
+        rating.setNumStars(5);
+        rating.setStepSize(1);
+
+        //add ratingBar to linearLayout
+        linearLayout.addView(rating);
+
+
+        popDialog.setIcon(android.R.drawable.btn_star_big_on);
+        popDialog.setTitle("Add Rating: ");
+
+        //add linearLayout to dailog
+        popDialog.setView(linearLayout);
+
+
+
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                System.out.println("Rated val:"+v);
+            }
+        });
+
+
+
+        // Button OK
+        popDialog.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //textView.setText(String.valueOf(rating.getProgress()));
+                        String prog = String.valueOf(rating.getProgress());
+                        dialog.dismiss();
+                    }
+
+                })
+
+                // Button Cancel
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        popDialog.create();
+        popDialog.show();
+
+
     }
 
     /*

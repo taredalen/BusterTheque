@@ -16,4 +16,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
+    <style name="RatingBar"
+        parent="android:style/Widget.Material.RatingBar.Small">
+      </style>
 </resources>

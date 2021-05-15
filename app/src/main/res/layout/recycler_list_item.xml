@@ -35,9 +35,11 @@
 
         <TextView
             android:id="@+id/textViewTitle"
-            android:layout_width="134dp"
-            android:layout_height="22dp"
-            android:fontFamily="@font/pt_sans_caption_regular"
+            android:layout_width="135dp"
+            android:layout_height="29dp"
+            android:autoSizeMaxTextSize="12sp"
+            android:breakStrategy="balanced"
+            android:fontFamily="@font/ubuntu_medium"
             android:gravity="center"
             android:letterSpacing="0.05"
             android:maxLines="5"
@@ -49,7 +51,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/imageViewPoster"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.81" />
+            app:layout_constraintVertical_bias="0.834" />
 
         <ImageView
             android:id="@+id/imageViewPoster"
@@ -67,7 +69,7 @@
             android:id="@+id/textViewYear"
             android:layout_width="67dp"
             android:layout_height="25dp"
-            android:fontFamily="@font/pt_sans_caption_regular"
+            android:fontFamily="@font/ubuntu_medium"
             android:gravity="center"
             android:letterSpacing="0.05"
             android:text="TextView"

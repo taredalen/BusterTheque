@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    Context context;
-    ArrayList<MovieData> movie;
-    private final RecyclerViewClickInterface recyclerViewClickInterface;
+    public Context context;
+    public ArrayList<MovieData> movie;
+    public final RecyclerViewClickInterface recyclerViewClickInterface;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

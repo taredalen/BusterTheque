@@ -36,7 +36,7 @@ public class BlankFragmentWatched extends Fragment implements RecyclerViewClickI
     public ArrayList<MovieData> movieData;
     public MovieAdapter adapter;
     public View view;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public BlankFragmentWatched() { }
 
@@ -119,6 +119,7 @@ public class BlankFragmentWatched extends Fragment implements RecyclerViewClickI
             Bundle bundle = new Bundle();
             bundle.putString("json", json.toString());
             bundle.putString("ID", id);
+            bundle.putString("collection", "watched");
             getActivity().runOnUiThread(() -> {
                 Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_nav_film_display, bundle);
             });

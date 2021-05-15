@@ -1,5 +1,6 @@
 package com.example.test.ui.user;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,9 +32,17 @@ public class ModifyUserFragment extends Fragment {
     EditText editTextNewPasswordConfirm;
     EditText editTextNewPassword;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String name;
 
     public ModifyUserFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        name = getArguments().getString("name");
+
     }
 
     @Override
@@ -46,17 +55,10 @@ public class ModifyUserFragment extends Fragment {
         editTextMailUser = root.findViewById(R.id.editTextMailUser);
         editTextMailUser.setText(uid.getEmail());
         editTextUsername = root.findViewById(R.id.editTextUsername);
-        db.collection("users").document(uid.getUid()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String name = task.getResult().getString("name");
-                editTextUsername.setText(name);
-            }
-        });
         editTextNewPasswordConfirm = root.findViewById(R.id.editTextNewPasswordConfirm);
         editTextNewPassword = root.findViewById(R.id.editTextNewPassword);
-
         buttonConfirmUser = root.findViewById(R.id.buttonConfirmUser);
-
+        editTextUsername.setText(name);
 
         buttonConfirmUser.setOnClickListener(v -> {
             if (checkField()) {
@@ -73,6 +75,7 @@ public class ModifyUserFragment extends Fragment {
                         }
                     });
                 }
+                Toast.makeText(getActivity(), "Modification successful", Toast.LENGTH_SHORT);
             }
 
         });

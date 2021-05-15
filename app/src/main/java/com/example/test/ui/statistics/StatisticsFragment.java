@@ -57,7 +57,7 @@ public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, 
                 Log.d("DOCS", "Error getting documents: ", task.getException());
             }
         });
-        /*movieListForStat.add(new String[]{"tt0060196", "1926", "France, Spain, West Germany, USA"});
+        movieListForStat.add(new String[]{"tt0060196", "1926", "France, Spain, West Germany, USA"});
         movieListForStat.add(new String[]{"tt0060196", "1892", "Italy, Spain, West Germany, USA"});
         movieListForStat.add(new String[]{"tt0060196", "1936", "Russia, Spain, West Germany, USA"});
         movieListForStat.add(new String[]{"tt0060196", "1976", "Italy, Spain, USA"});
@@ -65,7 +65,7 @@ public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, 
         movieListForStat.add(new String[]{"tt0060196", "1906", "Italy, Spain"});
         movieListForStat.add(new String[]{"tt0060196", "1916", "Italy"});
         movieListForStat.add(new String[]{"tt0060196", "1986", "Italy, Spain, West Germany, USA"});
-        */
+
         movieDecadeStats = new HashMap<>();
         movieCountryStats = new HashMap<>();
 

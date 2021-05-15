@@ -36,13 +36,6 @@
             android:textColor="#939498"
             android:text="Decade" />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabViewedFilm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Viewed"
-            android:visibility="invisible"
-            tools:visibility="invisible" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager

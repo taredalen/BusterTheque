@@ -52,16 +52,21 @@ public class UserFragment extends Fragment {
         textViewCreationDate.setText(f1.format(cal.getTime()));
         textViewUsername.setText(uid.getDisplayName());
         textViewMail.setText(uid.getEmail());
+        Bundle b = new Bundle();
         db.collection("users").document(uid.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String name = task.getResult().getString("name");
                 textViewUsername.setText(name);
+
+                b.putString("name", name);
+
             }
+            buttonUser.setOnClickListener(v -> {
+                Navigation.findNavController(root).navigate(R.id.action_nav_profile_to_user_modify, b);
+            });
         });
 
-        buttonUser.setOnClickListener(v -> {
-            Navigation.findNavController(root).navigate(R.id.action_nav_profile_to_user_modify);
-        });
+
 
 
         return root;

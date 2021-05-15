@@ -1,5 +1,6 @@
 package com.example.test.ui.statistics;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.example.test.ui.statistics.statfragment.CountryFragment;
 import com.example.test.ui.statistics.statfragment.DecadeFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -26,7 +28,7 @@ import java.util.List;
 
 public class StatisticsFragment extends Fragment {
     private StatisticsViewModel statisticsViewModel;
-    private ArrayList<String[]> movieListForStat = new ArrayList();
+    private ArrayList<String[]> movieListForStat;
     private TabLayout tabLayoutStats, tabCountry, tabDecade, tabViewedFilm;
     ViewPager viewPager;
     HashMap<String, Integer> movieDecadeStats, movieCountryStats;
@@ -38,9 +40,19 @@ public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, 
 
 
         ArrayList<String> list = new ArrayList<>();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        db.collection("users").document(uid).collection("watched").get().addOnCompleteListener(task -> {
+        movieListForStat = new ArrayList<>();
+        FirebaseUser uid = FirebaseAuth.getInstance().getCurrentUser();
+        System.out.println("---------------------------------------------------");
+        System.out.println(uid.getUid());
+        System.out.println("---------------------------------------------------");
+        View root = inflater.inflate(R.layout.fragment_statistics, container, false);
+        db.collection("users").document(uid.getUid()).collection("watched").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("please wait");
+                progressDialog.setIndeterminate(false);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d("DOCS", document.getId() + " => " + document.getString("imdbID"));
                     String imdb = document.getString("imdbID");
@@ -48,51 +60,58 @@ public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, 
                     String country = document.getString("country");
 
                     String[] l = new String[]{imdb, year, country};
+                    String[] list1 = new String[]{imdb, year, country};
+                    movieListForStat.add(list1);
+                    list.add(imdb);
 
-                    movieListForStat.add(l);
+
+                    System.out.println(imdb);
+                    System.out.println("list1  " + list1[0]);
+
+
                 }
                 System.out.println("---------------------------------------------------------------------");
-                System.out.println(list);
+                System.out.println(movieListForStat);
+                System.out.println("taille: " + movieListForStat.size());
+                System.out.println("taille2: " + list.size());
+                System.out.println("taille: " + movieListForStat.size());
+                System.out.println("taille2: " + list.size());
+                System.out.println("WTF");
+                movieDecadeStats = new HashMap<>();
+                movieCountryStats = new HashMap<>();
+
+                getStats();
+
+
+
+                tabLayoutStats = root.findViewById(R.id.tabLayoutStats);
+                tabCountry = root.findViewById(R.id.tabCountry);
+                tabDecade = root.findViewById(R.id.tabDecade);
+                viewPager = root.findViewById(R.id.viewPager);
+
+                setupViewPager(viewPager);
+
+                tabLayoutStats.setupWithViewPager(viewPager);
+                tabLayoutStats.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        viewPager.setCurrentItem(tab.getPosition());
+                    }
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) { }
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) { }
+                });
+
+                progressDialog.hide();
+                progressDialog.cancel();
+
             } else {
                 Log.d("DOCS", "Error getting documents: ", task.getException());
             }
         });
-        movieListForStat.add(new String[]{"tt0060196", "1926", "France, Spain, West Germany, USA"});
-        movieListForStat.add(new String[]{"tt0060196", "1892", "Italy, Spain, West Germany, USA"});
-        movieListForStat.add(new String[]{"tt0060196", "1936", "Russia, Spain, West Germany, USA"});
-        movieListForStat.add(new String[]{"tt0060196", "1976", "Italy, Spain, USA"});
-        movieListForStat.add(new String[]{"tt0060196", "1916", "Italy, West Germany, USA"});
-        movieListForStat.add(new String[]{"tt0060196", "1906", "Italy, Spain"});
-        movieListForStat.add(new String[]{"tt0060196", "1916", "Italy"});
-        movieListForStat.add(new String[]{"tt0060196", "1986", "Italy, Spain, West Germany, USA"});
-
-        movieDecadeStats = new HashMap<>();
-        movieCountryStats = new HashMap<>();
-
-        getStats();
-
-        View root = inflater.inflate(R.layout.fragment_statistics, container, false);
-
-        tabLayoutStats = root.findViewById(R.id.tabLayoutStats);
-        tabCountry = root.findViewById(R.id.tabCountry);
-        tabDecade = root.findViewById(R.id.tabDecade);
-        tabViewedFilm = root.findViewById(R.id.tabViewedFilm);
-        viewPager = root.findViewById(R.id.viewPager);
-
-        setupViewPager(viewPager);
-
-        tabLayoutStats.setupWithViewPager(viewPager);
-        tabLayoutStats.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) { }
-        });
         return root;
+
     }
 
     private void getStats() {

@@ -1,9 +1,9 @@
 package com.example.test.ui.film;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -212,64 +212,50 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
 
     public void ratingMovie() {
 
-        Log.d(TAG, "ratingMovie clk ");
-
         AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
-
         LinearLayout linearLayout = new LinearLayout(getActivity());
-        final RatingBar rating = new RatingBar(getActivity());
+        RatingBar rating = new RatingBar(getActivity());
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        rating.setLayoutParams(lp);
-        rating.setNumStars(5);
+        linearLayout.setGravity(Gravity.CENTER);
+        //rating.setNumStars(5);
         rating.setStepSize(1);
-
-        //add ratingBar to linearLayout
-        linearLayout.addView(rating);
-
-
-        popDialog.setIcon(android.R.drawable.btn_star_big_on);
-        popDialog.setTitle("Add Rating: ");
-
-        //add linearLayout to dailog
-        popDialog.setView(linearLayout);
-
-
-
-        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                System.out.println("Rated val:"+v);
+        db.collection("users").document(uid).collection(collection).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    if(document.getId().equals(imbdID)){
+                        Log.d("DOCS", document.getId() + " => " + document.getString("rating"));
+                        String str = document.getString("rating");
+                        int number = Integer.parseInt(str);
+                        rating.setNumStars(number);
+                    }
+                }
+            } else {
+                Log.d("DOCS", "Error getting documents: ", task.getException());
             }
         });
 
+        linearLayout.addView(rating);
+        popDialog.setTitle("  Rate this film:  ");
+        popDialog.setView(linearLayout);
 
+        rating.setOnRatingBarChangeListener((ratingBar, v, b) -> System.out.println("Rated val:" + v));
 
-        // Button OK
         popDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //textView.setText(String.valueOf(rating.getProgress()));
-                        String prog = String.valueOf(rating.getProgress());
-                        dialog.dismiss();
-                    }
-
+                (dialog, which) -> {
+                    String prog = String.valueOf(rating.getProgress());
+                    Log.d(TAG, "value: " + prog);
+                    dialog.dismiss();
+                    db.collection("users").document(uid).collection(collection).document(imbdID)
+                            .update("rating", prog).addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Toast.makeText(getActivity(), "rate saved", Toast.LENGTH_SHORT).show();
+                    }).addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
                 })
-
-                // Button Cancel
                 .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                        (dialog, id) -> dialog.cancel());
 
         popDialog.create();
         popDialog.show();
-
 
     }
 

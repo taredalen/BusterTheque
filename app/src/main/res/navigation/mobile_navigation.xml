@@ -61,6 +61,24 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.test.ui.user.UserFragment"
+        android:label="@string/profile_nav"
+        tools:layout="@layout/fragment_user">
+        <action
+            android:id="@+id/action_nav_profile_to_user_modify"
+            app:destination="@+id/nav_user_modify" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_user_modify"
+        android:name="com.example.test.ui.user.ModifyUserFragment"
+        android:label="@string/profile_nav"
+        tools:layout="@layout/fragment_modify_user"/>
+
+
+
+    <fragment
         android:id="@+id/nav_fragment_blank"
         android:name="com.example.test.ui.filmId.BlankFragment"
         android:label="@string/menu_film"

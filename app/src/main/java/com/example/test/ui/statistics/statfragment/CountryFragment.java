@@ -1,6 +1,7 @@
 package com.example.test.ui.statistics.statfragment;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,8 +75,14 @@ public class CountryFragment extends Fragment {
             PieData data = new PieData(countryArray, barDataSet);
             data.setValueTextSize(10);
             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            pieChart.getLegend().setEnabled(false);
+            pieChart.setDescription("");
+            pieChart.setBackgroundColor(Color.WHITE);
+            pieChart.setDrawHoleEnabled(false);
+            barDataSet.setSliceSpace(0.1f);
 
             getActivity().runOnUiThread(()-> {
+                pieChart.setBackgroundColor(Color.BLACK);
                 pieChart.setData(data);
                 p.hide();
                 p.cancel();

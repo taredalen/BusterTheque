@@ -1,6 +1,7 @@
 package com.example.test.ui.statistics.statfragment;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,10 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,14 +70,26 @@ public class DecadeFragment extends Fragment {
             BarDataSet barDataSet = new BarDataSet(noByDecadeArray, "Film viewed");
             BarData data = new BarData(decadeArray, barDataSet);
             data.setValueTextSize(10);
+            data.setValueTextColor(Color.WHITE);
+            data.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                    return String.valueOf((int) Math.floor(value));
+                }
+            });
             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
             XAxis xAxis = barchart.getXAxis();
             xAxis.setLabelsToSkip(0);
 
-           // xAxis.setTextColor(Color.WHITE);
-           // xAxis.setValueTextColors(Color.WHITE);
+            xAxis.setTextColor(Color.WHITE);
+            barchart.getLegend().setEnabled(false);
+            barchart.setDescription("");
+            //xAxis.setValueTextColors(Color.WHITE);
             //barchart.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            barchart.setDrawGridBackground(false);
             getActivity().runOnUiThread(()-> {
+                barchart.setBackgroundColor(Color.BLACK);
+                barchart.setDrawGridBackground(false);
                 barchart.setData(data);
                 p.hide();
                 p.cancel();

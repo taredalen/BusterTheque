@@ -161,7 +161,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                         stringNote = editTextNote.getText().toString().trim();
                         if(stringNote.length() == 0 ) stringNote = " ";
 
-                        Movie movie = new Movie(imbdID, stringNote, "rating", country, year);
+                        Movie movie = new Movie(imbdID, stringNote, "0", country, year);
                         DocumentReference documentReference =  db.collection("users").document(uid).collection(selectedItems.get(i)).document(imbdID);
                         documentReference.get().addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
@@ -217,7 +217,7 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         RatingBar rating = new RatingBar(getActivity());
 
         linearLayout.setGravity(Gravity.CENTER);
-        //rating.setNumStars(5);
+        rating.setNumStars(5);
         rating.setStepSize(1);
         db.collection("users").document(uid).collection(collection).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -226,7 +226,8 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                         Log.d("DOCS", document.getId() + " => " + document.getString("rating"));
                         String str = document.getString("rating");
                         int number = Integer.parseInt(str);
-                        rating.setNumStars(number);
+                        //rating.setNumStars(number);
+                        rating.setRating(number);
                     }
                 }
             } else {

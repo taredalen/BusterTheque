@@ -1,24 +1,18 @@
 package com.example.test.ui.user;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.test.R;
-import com.example.test.firebase.MainAuthentication;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,7 +22,6 @@ public class ModifyUserFragment extends Fragment {
 
     EditText editTextMailUser;
     EditText editTextUsername;
-    Button buttonConfirmUser;
     EditText editTextNewPasswordConfirm;
     EditText editTextNewPassword;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -57,8 +50,11 @@ public class ModifyUserFragment extends Fragment {
         editTextUsername = root.findViewById(R.id.editTextUsername);
         editTextNewPasswordConfirm = root.findViewById(R.id.editTextNewPasswordConfirm);
         editTextNewPassword = root.findViewById(R.id.editTextNewPassword);
-        buttonConfirmUser = root.findViewById(R.id.buttonConfirmUser);
+        //buttonConfirmUser = root.findViewById(R.id.buttonConfirmUser);
         editTextUsername.setText(name);
+
+
+        FloatingActionButton buttonConfirmUser = root.findViewById(R.id.buttonConfirmUser);
 
         buttonConfirmUser.setOnClickListener(v -> {
             if (checkField()) {
@@ -66,12 +62,10 @@ public class ModifyUserFragment extends Fragment {
                 db.collection("users").document(uid.getUid()).update("name",editTextUsername.getText().toString().trim());
                 if (!editTextNewPassword.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getActivity(), "Failed to login! Try again!", Toast.LENGTH_LONG).show();
-                    uid.updatePassword(editTextNewPassword.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("MSG", "task not failed successfuly");
-                            }
+                    uid.updatePassword(editTextNewPassword.getText().toString().trim()).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("MSG", "task not failed successfuly");
+                            Toast.makeText(getActivity(), "Changes saved", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -79,9 +73,6 @@ public class ModifyUserFragment extends Fragment {
             }
 
         });
-
-
-
         return root;
     }
 

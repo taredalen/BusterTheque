@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
@@ -42,6 +43,8 @@ public class CountryFragment extends Fragment {
         if (getArguments() != null) {
             Log.d("MSG", "print1");
             map = (HashMap<String, Integer>) getArguments().getSerializable("hashmap");
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         }
     }
 

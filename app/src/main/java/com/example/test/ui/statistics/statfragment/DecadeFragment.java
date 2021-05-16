@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
@@ -50,6 +51,7 @@ public class DecadeFragment extends Fragment {
 
         barchart = root.findViewById(R.id.barChartDecade);
         setData();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         return root;
     }
 

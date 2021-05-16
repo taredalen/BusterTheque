@@ -1,28 +1,36 @@
 package com.example.test.ui.film;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
-
+import com.example.test.firebase.MainAuthentication;
+import com.example.test.firebase.Movie;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
 
-public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
-    public String json, imbdID, title, year, country, collection;
+public class FilmLoadFragment extends Fragment {
+
+    public String json, imbdID, title, year, country, collection, uid
+            ;
     public ImageView imageViewFilmLayout;
     public TextView textFilmLayoutTitle;
     public TextView textFilmLayoutRuntime;
@@ -35,8 +43,11 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
 
     public View view;
 
-    public Button buttonAddMovie;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    
+    public boolean[] checkedItems;
+    public List<String> selectedItems;
+    public String[] listItems;
 
     public FilmLoadFragment() {
         // Required empty public constructor
@@ -49,6 +60,12 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
             json = getArguments().getString("json");
             imbdID = getArguments().getString("ID");
             collection = getArguments().getString("collection");
+
+            listItems = new String[]{"watched", "wishlist"};
+            checkedItems  = new boolean[listItems.length];
+            selectedItems = Arrays.asList(listItems);
+
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
     }
 
@@ -97,24 +114,54 @@ public class FilmLoadFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        buttonAddMovie = (Button) view.findViewById(R.id.buttonAddMovie);
-        buttonAddMovie.setOnClickListener(this);
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(view -> addMovie());
 
         return view;
     }
+    
+    public void addMovie(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Add to collection : ");
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.buttonAddMovie) {
-            Bundle bundle = new Bundle();
-            bundle.putString("imdbID", imbdID);
-            bundle.putString("title", title);
-            bundle.putString("year", year);
-            bundle.putString("country", country);
-            bundle.putString("collection", collection);
-            getActivity().runOnUiThread(() -> {
-                Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
-            });
-        }
+        builder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
+            checkedItems[which] = isChecked;
+            String currentItem = selectedItems.get(which);
+        });
+        builder.setPositiveButton("Done", (dialog, which) -> {
+            for (int i = 0; i < checkedItems.length; i++) {
+                if (checkedItems[i]) {
+                    if (MainAuthentication.user == null) {
+                        Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Movie movie = new Movie(imbdID, "", "0", country, year);
+                        DocumentReference documentReference =  db.collection("users").document(uid).collection(selectedItems.get(i)).document(imbdID);
+                        documentReference.get().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                documentReference.set(movie).addOnCompleteListener(task1 -> {
+                                    if(task1.isSuccessful()){
+                                        Toast.makeText(getActivity(), "Movie saved" , Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        Toast.makeText(getActivity(), "Save erreur", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Movie already saved!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        builder.setNegativeButton("CANCEL", (dialog, which) -> { });
+
+        builder.create();
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

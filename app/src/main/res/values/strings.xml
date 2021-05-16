@@ -38,5 +38,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Search">search</string>
     <string name="profile_nav">PROFILE</string>
+    <string name="submit" />
 </resources>
 

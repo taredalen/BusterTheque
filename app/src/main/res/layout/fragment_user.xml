@@ -5,105 +5,172 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBack"
+    android:clickable="false"
     tools:context=".ui.user.UserFragment">
+
+    <Button
+        android:id="@+id/log_out"
+        android:layout_width="17dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="221dp"
+        android:background="#0000"
+        android:foreground="@drawable/log_out"
+        app:layout_constraintBottom_toTopOf="@+id/textViewUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.959"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="285dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.63" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="285dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.474" />
 
     <TextView
         android:id="@+id/textViewMail3"
-        android:layout_width="75dp"
-        android:layout_height="33dp"
-        android:text="Mail:"
-        android:textSize="24sp"
+        android:layout_width="72dp"
+        android:layout_height="24dp"
+        android:text="Your Mail"
+        android:fontFamily="@font/ubuntu_medium"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.239"
+        app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.117" />
+        app:layout_constraintVertical_bias="0.354" />
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="302dp"
-        android:layout_height="245dp"
-        android:src="@drawable/buster"
+        android:layout_width="188dp"
+        android:layout_height="165dp"
+        android:src="@drawable/mushu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.077" />
 
     <TextView
         android:id="@+id/textViewMail"
-        android:layout_width="186dp"
-        android:layout_height="33dp"
+        android:layout_width="282dp"
+        android:layout_height="41dp"
+        android:fontFamily="@font/ubuntu_medium"
         android:text="TextView"
-        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintStart_toEndOf="@+id/textViewMail3"
+        app:layout_constraintEnd_toEndOf="@+id/textViewUsername"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewMail3"
         app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.115" />
+        app:layout_constraintVertical_bias="0.436" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Creation date:"
-        android:textSize="24sp"
+        android:fontFamily="@font/ubuntu_medium"
+        android:text="Creation date"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintHorizontal_bias="0.134"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMail3"
-        app:layout_constraintVertical_bias="0.24" />
+        app:layout_constraintVertical_bias="0.266" />
 
     <TextView
         android:id="@+id/textViewCreationDate"
-        android:layout_width="178dp"
-        android:layout_height="30dp"
-        android:text="TextView"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMail3"
-        app:layout_constraintVertical_bias="0.239" />
+        android:layout_width="282dp"
+        android:layout_height="33dp"
+        android:fontFamily="@font/ubuntu_medium"
 
-    <Button
+        android:text="TextView"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMail3"
+        app:layout_constraintVertical_bias="0.382" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonUser"
-        android:layout_width="117dp"
-        android:layout_height="64dp"
-        android:text="modify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="220dp"
+        android:contentDescription="@string/submit"
+        app:backgroundTint="@color/colorIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0.822" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.956"
+        app:rippleColor="#000000"
+        app:srcCompat="@drawable/baseline_edit_24" />
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="72dp"
-        android:layout_height="34dp"
-        android:text="User:"
-        android:textSize="24sp"
+        android:layout_width="69dp"
+        android:layout_height="24dp"
+        android:fontFamily="@font/ubuntu_medium"
+        android:text="Your Name"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.236"
+        app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMail3"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView6"
+        app:layout_constraintVertical_bias="0.125" />
 
     <TextView
         android:id="@+id/textViewUsername"
-        android:layout_width="188dp"
-        android:layout_height="36dp"
+        android:layout_width="283dp"
+        android:layout_height="35dp"
         android:text="TextView"
-        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:fontFamily="@font/ubuntu_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.589" />
+        app:layout_constraintVertical_bias="0.459" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -277,18 +277,28 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/gradient" />
 
-            <Button
-                android:id="@+id/buttonAddMovie"
-                android:layout_width="36dp"
-                android:layout_height="143dp"
-                android:layout_marginTop="484dp"
-                android:layout_marginEnd="44dp"
-                android:layout_marginRight="44dp"
-                android:background="#0000"
-                android:foreground="@drawable/add"
-                android:text="+"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="16dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="220dp"
+                android:layout_marginEnd="34dp"
+                android:layout_marginRight="34dp"
+                android:layout_marginBottom="294dp"
+                android:contentDescription="@string/submit"
+                app:backgroundTint="@color/colorIndicator"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/textFilmLayoutDirector"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewFilmLayoutPoster"
+                app:layout_constraintVertical_bias="0.607"
+                app:rippleColor="#000000"
+                app:srcCompat="@drawable/baseline_add_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

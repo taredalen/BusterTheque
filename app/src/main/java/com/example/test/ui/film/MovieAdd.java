@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.test.R;
-import com.example.test.firebase.MainAuthentication;
 import com.example.test.firebase.Movie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -154,10 +153,6 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         builder.setPositiveButton("Done", (dialog, which) -> {
             for (int i = 0; i < checkedItems.length; i++) {
                 if (checkedItems[i]) {
-                    if (MainAuthentication.user == null) {
-                        Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
-                    }
-                    else {
                         stringNote = editTextNote.getText().toString().trim();
                         if(stringNote.length() == 0 ) stringNote = " ";
 
@@ -178,7 +173,6 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                                 Toast.makeText(getActivity(), "Movie already saved!", Toast.LENGTH_LONG).show();
                             }
                         });
-                    }
                 }
             }
         });
@@ -225,9 +219,13 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
                     if(document.getId().equals(imbdID)){
                         Log.d("DOCS", document.getId() + " => " + document.getString("rating"));
                         String str = document.getString("rating");
-                        int number = Integer.parseInt(str);
+                        try{
+                            int number = Integer.parseInt(str);
+                            rating.setRating(number);
+                        }catch (Exception e){
+                            rating.setRating(2);
+                        }
                         //rating.setNumStars(number);
-                        rating.setRating(number);
                     }
                 }
             } else {

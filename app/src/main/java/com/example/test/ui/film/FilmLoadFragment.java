@@ -14,7 +14,6 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
-import com.example.test.firebase.MainAuthentication;
 import com.example.test.firebase.Movie;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -118,6 +117,11 @@ public class FilmLoadFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(view -> addMovie());
 
+        if(collection.equals("null")) {
+            //fab.setBackgroundResource(R.drawable.baseline_edit_24);
+            //fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.baseline_edit_24));
+
+        }
         return view;
     }
     
@@ -134,9 +138,6 @@ public class FilmLoadFragment extends Fragment {
             builder.setPositiveButton("Done", (dialog, which) -> {
                 for (int i = 0; i < checkedItems.length; i++) {
                     if (checkedItems[i]) {
-                        if (MainAuthentication.user == null) {
-                            Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
-                        } else {
                             Movie movie = new Movie(imbdID, "", "0", country, year);
                             DocumentReference documentReference = db.collection("users").document(uid).collection(selectedItems.get(i)).document(imbdID);
                             documentReference.get().addOnCompleteListener(task -> {
@@ -153,7 +154,6 @@ public class FilmLoadFragment extends Fragment {
                                 }
                             });
                         }
-                    }
                 }
             });
 

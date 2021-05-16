@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private View decorView;
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
-
-@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

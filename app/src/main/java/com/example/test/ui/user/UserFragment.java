@@ -1,5 +1,6 @@
 package com.example.test.ui.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.test.R;
+import com.example.test.firebase.MainAuthentication;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,6 +57,17 @@ public class UserFragment extends Fragment {
         textViewMail.setText(uid.getEmail());
 
 
+        Button logOutButton = root.findViewById(R.id.log_out);
+
+        logOutButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent  = new Intent(getActivity(), MainAuthentication.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+        });
+
         Bundle b = new Bundle();
 
         db.collection("users").document(uid.getUid()).get().addOnCompleteListener(task -> {
@@ -76,4 +89,5 @@ public class UserFragment extends Fragment {
 
         return root;
     }
+
 }

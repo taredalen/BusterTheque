@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-//import com.example.test.firebase.Movie;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -28,6 +27,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
 
         buttonAddMovie = root.findViewById(R.id.buttonAddMovieHome);
         buttonSetMovie = root.findViewById(R.id.buttonSetMovie);

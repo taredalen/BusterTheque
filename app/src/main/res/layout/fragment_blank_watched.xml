@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.collection.BlankFragmentWatched"
     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-    app:spanCount="2">
+    app:spanCount="2"
+    android:background="@color/colorBack"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDisplayFilmCollection"

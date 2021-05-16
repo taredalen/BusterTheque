@@ -1,5 +1,6 @@
 package com.example.test.ui.home;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,68 +12,123 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.test.OmdbApi.OmdbApiSearch;
 import com.example.test.R;
 import com.example.test.firebase.MainAuthentication;
 import com.example.test.firebase.Movie;
+import com.example.test.ui.film.MovieAdapter;
+import com.example.test.ui.film.MovieData;
+import com.example.test.ui.film.RecyclerViewClickInterface;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
-
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private Button buttonAddMovie, buttonSetMovie;
-
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
-        buttonAddMovie = root.findViewById(R.id.buttonAddMovieHome);
-        buttonSetMovie = root.findViewById(R.id.buttonSetMovie);
+public class HomeFragment extends Fragment implements RecyclerViewClickInterface {
 
-        buttonAddMovie.setOnClickListener(this);
-        buttonSetMovie.setOnClickListener(this);
+    public RecyclerView recyclerView;
+    public ArrayList<MovieData> movieData;
+    public MovieAdapter adapter;
+    public View view;
+    public final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        return root;
-    }
+    public HomeFragment() { }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonSetMovie:
-                System.out.println("param");
-                break;
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_blank_watched, container, false);
+
+        movieData = new ArrayList<>();
+        adapter = new MovieAdapter(getActivity(), movieData, this);
+
+        recyclerView = view.findViewById(R.id.recyclerViewDisplayFilmCollection);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView.setAdapter(adapter);
+
+        readDocs();
+
+        return view;
     }
 
-    public void addMovie() {
-        if (MainAuthentication.user == null) {
-            System.out.println("No user is signed in"); // TODO
-        } else {
-
-            System.out.println("User is signed in");
-            Movie movie = new Movie("imbdID", "stringNote", "rating", "country", "year");
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            db.collection("users").document(uid).collection("movies").add(movie);
-            readDocs();
-        }
-    }
     public void readDocs(){
-        System.out.println("---------------------------------------------------------------------");
+        ArrayList<String> list = new ArrayList<>();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        // db.collection("users").document(uid).collection("movies").add(movie);
-
-        db.collection("users").document(uid).collection("movies").get().addOnCompleteListener(task -> {
+        db.collection("users").document(uid).collection("watched").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("TAG", document.getId() + " => " + document.getString("imdbID"));
+                    Log.d("DOCS", document.getId() + " => " + document.getString("imdbID"));
+                    list.add(document.getString("imdbID"));
                 }
+                System.out.println("---------------------------------------------------------------------");
+                System.out.println(list);
+                setFilmById(list);
             } else {
-                Log.d("TAG", "Error getting documents: ", task.getException());
+                Log.d("DOCS", "Error getting documents: ", task.getException());
             }
+        });
+    }
+
+    public void setFilmById(ArrayList<String> movieId) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("please wait");
+        progressDialog.setIndeterminate(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        executor.execute(() -> {
+            OmdbApiSearch o = new OmdbApiSearch("", "63f3e471");
+
+            for (String s : movieId) {
+                o.setTitle(s);
+                try {
+                    movieData.add(new MovieData(o.getMovie()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            getActivity().runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+                progressDialog.hide();
+                progressDialog.cancel();
+            });
+        });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            String id = movieData.get(position).imdbID;
+            OmdbApiSearch o = new OmdbApiSearch(movieData.get(position).imdbID, "63f3e471");
+            JSONObject json = null;
+            try {
+                json = o.getMovie();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Bundle bundle = new Bundle();
+            bundle.putString("json", json.toString());
+            bundle.putString("ID", id);
+            bundle.putString("collection", "watched");
+            getActivity().runOnUiThread(() -> {
+                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_film_display, bundle);
+            });
         });
     }
 }

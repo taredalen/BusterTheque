@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.test.R;
@@ -29,8 +30,7 @@ import java.util.List;
 
 public class FilmLoadFragment extends Fragment {
 
-    public String json, imbdID, title, year, country, collection, uid
-            ;
+    public String json, imbdID, title, year, country, collection, uid;
     public ImageView imageViewFilmLayout;
     public TextView textFilmLayoutTitle;
     public TextView textFilmLayoutRuntime;
@@ -121,47 +121,61 @@ public class FilmLoadFragment extends Fragment {
     }
     
     public void addMovie(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Add to collection : ");
+        if (collection.equals("null")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Add to collection : ");
 
-        builder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
-            checkedItems[which] = isChecked;
-            String currentItem = selectedItems.get(which);
-        });
-        builder.setPositiveButton("Done", (dialog, which) -> {
-            for (int i = 0; i < checkedItems.length; i++) {
-                if (checkedItems[i]) {
-                    if (MainAuthentication.user == null) {
-                        Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        Movie movie = new Movie(imbdID, "", "0", country, year);
-                        DocumentReference documentReference =  db.collection("users").document(uid).collection(selectedItems.get(i)).document(imbdID);
-                        documentReference.get().addOnCompleteListener(task -> {
-                            if(task.isSuccessful()){
-                                documentReference.set(movie).addOnCompleteListener(task1 -> {
-                                    if(task1.isSuccessful()){
-                                        Toast.makeText(getActivity(), "Movie saved" , Toast.LENGTH_LONG).show();
-                                    }
-                                    else {
-                                        Toast.makeText(getActivity(), "Save erreur", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
-                            else {
-                                Toast.makeText(getActivity(), "Movie already saved!", Toast.LENGTH_LONG).show();
-                            }
-                        });
+            builder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
+                checkedItems[which] = isChecked;
+                String currentItem = selectedItems.get(which);
+            });
+            builder.setPositiveButton("Done", (dialog, which) -> {
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i]) {
+                        if (MainAuthentication.user == null) {
+                            Toast.makeText(getActivity(), "No user is signed in", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Movie movie = new Movie(imbdID, "", "0", country, year);
+                            DocumentReference documentReference =  db.collection("users").document(uid).collection(selectedItems.get(i)).document(imbdID);
+                            documentReference.get().addOnCompleteListener(task -> {
+                                if(task.isSuccessful()){
+                                    documentReference.set(movie).addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()){
+                                            Toast.makeText(getActivity(), "Movie saved" , Toast.LENGTH_LONG).show();
+                                        }
+                                        else {
+                                            Toast.makeText(getActivity(), "Save erreur", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                                else {
+                                    Toast.makeText(getActivity(), "Movie already saved!", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        builder.setNegativeButton("CANCEL", (dialog, which) -> { });
+            builder.setNegativeButton("CANCEL", (dialog, which) -> { });
 
-        builder.create();
+            builder.create();
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        else {
+            Bundle bundle = new Bundle();
+            bundle.putString("imdbID", imbdID);
+            bundle.putString("title", title);
+            bundle.putString("year", year);
+            bundle.putString("country", country);
+            bundle.putString("collection", collection);
+            getActivity().runOnUiThread(() -> {
+                Navigation.findNavController(view).navigate(R.id.action_nav_search_film_to_movie_add, bundle);
+            });
+        }
+
     }
 }

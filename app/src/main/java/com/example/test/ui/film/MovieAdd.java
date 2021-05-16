@@ -219,15 +219,22 @@ public class MovieAdd extends Fragment implements View.OnClickListener {
         linearLayout.setGravity(Gravity.CENTER);
         rating.setNumStars(5);
         rating.setStepSize(1);
+        //rating.setRating(2);
         db.collection("users").document(uid).collection(collection).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     if(document.getId().equals(imbdID)){
                         Log.d("DOCS", document.getId() + " => " + document.getString("rating"));
                         String str = document.getString("rating");
-                        int number = Integer.parseInt(str);
+                        try {
+                            int number = Integer.parseInt(str);
+                            rating.setRating(number);
+                        } catch (Exception e) {
+                            rating.setRating(1);
+                        }
+
                         //rating.setNumStars(number);
-                        rating.setRating(number);
+
                     }
                 }
             } else {

@@ -53,12 +53,14 @@ public class UserFragment extends Fragment {
         textViewUsername.setText(uid.getDisplayName());
         textViewMail.setText(uid.getEmail());
 
+
         Bundle b = new Bundle();
 
         db.collection("users").document(uid.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String name = task.getResult().getString("name");
                 textViewUsername.setText(name);
+
                 b.putString("name", name);
 
             }
